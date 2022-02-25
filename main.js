@@ -613,33 +613,7 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
 }
 
 
-     else if (input.startsWith(prefix + "ip")) {
-axios.get(`http://ip-api.com/json/?fields=61439`)
-       .then(response => {
-         
- api.sendMessage({body:`======${(Date.now()) - timeStart}ms=====
- 🗺️Continent: ${infoip.continent}
-🏳️Nation: ${infoip.country}
-🎊Country Code: ${infoip.countryCode}
-🕋Area: ${infoip.region}
-⛱️Region/State: ${infoip.regionName}
-🏙️City: ${infoip.city}
-🛣️District: ${infoip.district}
-📮ZIP code: ${infoip.zip}
-🧭Latitude: ${infoip.lat}
-🧭Longitude: ${infoip.lon}
-⏱️Timezone: ${infoip.timezone}
-👨‍✈️Organization Name: ${infoip.org}
-💵Currency unit: ${infoip.currency}
-`,location: {
-				latitude: infoip.lat,
-				longitude: infoip.lon,
-				current: true
-			}}
-,event.threadID, event.messageID);}
-        
-    
-                  }
+     
 
                     else if (input.startsWith(prefix + "wiki")) {
  
