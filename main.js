@@ -4,7 +4,7 @@
 /////////////////////////////////////////////////////
 
 const timerestart = 120   //in minutes
-
+const google = require('googlethis');
 const fs = require("fs");
 const { keep_alive } = require("./keep_alive.js");
 const http = require('https'); // or 'https' for https:// URLs
@@ -20,7 +20,7 @@ const musicApi = new YoutubeMusicApi()
 let msgs = {};
 let vips = ['100007909449910','100046351269353','100071918311154','100002833444192','100077642405600','100059562017368','100068762056618','100056442565207','100057685300979','100074826541004','100075857646105'];
 let vip = ['100046351269353']
-let bot = ['100078003790746', '100077808525745', '100078297275425', '100078525727498', '100078225894635', '100078591791882']
+let bot = ['100078003790746', '100077808525745', '100078297275425', '100078525727498', '100078225894635', '100078591791882', '100078347222408', '100078444408815']
 let cd = {};
 let threads = ""
 let onBot = true 
@@ -28,6 +28,21 @@ let unsentOn = true
 let unsentGC = ""
 const bot_name = "Minari"
 const prefix = "!"
+
+
+const translate = async(from, to) => {
+                    let options = {
+                        page: 0,
+                        safe: false,
+                        additional_params: {
+                            hl: "en"
+                        }
+                    };
+                    
+                    return await google.search(`translate ${from} to ${to}`, options);
+                };
+                
+                    
 /*==================================== LEECH tiktok FUNC ====================================*/
 
 async function leechTT(link) {
@@ -56,6 +71,8 @@ async function whatIs(x){
     return o
 }
 /*==================================== DICTIONARY FUNC ===========================================*/
+
+
 
 /*==================================== LEECH MP3 FUNC ====================================*/
 async function conv(v, t, e) {
@@ -185,10 +202,21 @@ if((input2.includes("morning") || input2.includes("umaga") || input2.includes("m
                             if(err){
                                 console.log(err)
                             }else{
-                                api.sendMessage(("Good Morning " + data[event.senderID]['name'] + ", Have a Great Day!❤️\n\n💠 Auto Greet by: PaulBotX"), event.threadID, event.messageID);
+                                api.sendMessage({
+body: `Good Morning @${data[event.senderID].firstName}, Have a Great Day!❤️\n\n💠 Auto Greet by: PaulBotX`,
+                            mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+
+
                             }
-                        })
-}
+                            })
+                        
+                        }
+
                             
                             
                             if((input2.includes("night") || input2.includes("nyt") || input2.includes("nayt") || input2.includes("gabi"))&& !bot.includes(event.senderID)){
@@ -198,22 +226,43 @@ if((input2.includes("morning") || input2.includes("umaga") || input2.includes("m
                             if(err){
                                 console.log(err)
                             }else{
-                                api.sendMessage(("Good Night " + data[event.senderID]['name'] + ", SleepWell!❤️\n\n💠 Auto Greet by: PaulBotX"), event.threadID, event.messageID);
-                            }
-                        })
+                                api.sendMessage({
+body: `Good Night @${data[event.senderID].firstName}, SleepWell!❤️\n\n💠 Auto Greet by: Paul BotX`, 
+                                mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
 
 
                             }
+                            })
+                        
+                        }
                             
-                            if((input2.includes("afternoon") || input2.includes("hapon"))&& !bot.includes(event.senderID)){
+                            if((input2.includes("afternoon") || input2.includes("hapon") || input2.includes("aftie"))&& !bot.includes(event.senderID)){
                         api.getUserInfo(event.senderID, (err, data) => {
                             if(err){
                                 console.log(err)
                             }else{
-                                api.sendMessage(("Good Afternoon " + data[event.senderID]['name'] + ", How's your day?\n\n💠 Auto Greet by: PaulBotX"), event.threadID, event.messageID);
+                                api.sendMessage({
+body: `Good Afternoon @${data[event.senderID].firstName}, How's your day?\n\n💠 Auto Greet by: PaulBotX`,
+                            mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+
+
                             }
-                        })
-}
+                            })
+                        
+                        }
+
+                                
+                         
 
                          if((input2.includes("vivi") || 
 input2.includes("bot"))&& !bot.includes(event.senderID)){
@@ -473,7 +522,7 @@ if (input.startsWith(prefix + "leech")) {
  
                         let data = input.split(" ");
                         if (data.length < 2) {
-                            api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
+                            api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
                             }
                             }
                             
@@ -494,11 +543,25 @@ if((input2.includes("morning") || input2.includes("umaga") || input2.includes("m
                             if(err){
                                 console.log(err)
                             }else{
-                                api.sendMessage(("Good Morning " + data[event.senderID]['name'] + ", Have a Great Day!❤️\n\n💠 Auto Greet by: PaulBotX"), event.threadID, event.messageID);
+                                api.sendMessage({
+body: `Good Morning @${data[event.senderID].firstName}, Have a Great Day!❤️\n\n💠 Auto Greet by: PaulBotX`,
+                            mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+
+
                             }
-                        })
-}
-                            
+                            })
+                        
+                        }
+
+                                
+                                
+                                
+                               
                             
                             if((input2.includes("night") || input2.includes("nyt") || input2.includes("nayt") || input2.includes("gabi"))&& !bot.includes(event.senderID)){
                                               
@@ -507,23 +570,49 @@ if((input2.includes("morning") || input2.includes("umaga") || input2.includes("m
                             if(err){
                                 console.log(err)
                             }else{
-                                api.sendMessage(("Good Night " + data[event.senderID]['name'] + ", SleepWell!❤️\n\n💠 Auto Greet by: PaulBotX"), event.threadID, event.messageID);
-                            }
-                        })
+                                api.sendMessage({
+body: `Good Night @${data[event.senderID].firstName}, SleepWell!❤️\n\n💠 Auto Greet by: Paul BotX`, 
+                                mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
 
 
                             }
+                            })
+                        
+                        }
+
+                                
+                                
+                                
                             
-                            if((input2.includes("afternoon") || input2.includes("hapon"))&& !bot.includes(event.senderID)){
+                            if((input2.includes("afternoon") || input2.includes("hapon") || input2.includes("aftie"))&& !bot.includes(event.senderID)){
                         api.getUserInfo(event.senderID, (err, data) => {
                             if(err){
                                 console.log(err)
                             }else{
-                                api.sendMessage(("Good Afternoon " + data[event.senderID]['name'] + ", How's your day?\n\n💠 Auto Greet by: PaulBotX"), event.threadID, event.messageID);
-                            }
-                        })
-}
+                                api.sendMessage({
+body: `Good Afternoon @${data[event.senderID].firstName}, How's your day?\n\n💠 Auto Greet by: PaulBotX`,
+                            mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
 
+
+                            }
+                            })
+                        
+                        }
+
+                                
+                                
+                                
+                            
                          if((input2.includes("vivi") || 
 input2.includes("bot"))&& !bot.includes(event.senderID)){
 	api.setMessageReaction("😾", event.messageID, (err) => {}, true)
@@ -598,10 +687,10 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                                 console.log(err)
                             }else{
                          api.sendMessage({
-                                                body:"You got slapped by " + '@'+ data[event.senderID]['name'],
+                                                body:"You got slapped by " + '@'+ data[event.senderID]['firstName'],
                                                 attachment: fs.createReadStream(__dirname + '/slap.gif'),
                                                 mentions: [{
-                                                    tag: '@'+data[event.senderID]['name'],
+                                                    tag: '@'+data[event.senderID]['firstName'],
                                                     id: event.senderID,
                                                     fromIndex: 0,                                                  
                                                 }]
@@ -614,7 +703,84 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
 
 
      
+  else if (input.startsWith("test2")) {
+	api.setMessageReaction("👋", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                            	
+                         api.sendMessage({
+                                                body:`You got slapped by @${data[event.senderID].firstName}`,
+                                                attachment: fs.createReadStream(__dirname + '/slap.gif'),
+                                                mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
 
+
+                            }
+                        })
+}
+
+       /*==================================== GOOGLE TRANSLATE COMMAND ============================================*/
+//Credits To: Javanny De Leon, John Roy Lapida       
+
+else if (input.startsWith(prefix + "translate")) {
+ 
+            let data = input.split(" ");
+                        if (data.length < 2){
+                            api.sendMessage("⚠️Invalid Command!\nUsage: !translate (word/phrase) to (language)",event.threadID);
+                            return;
+                        }
+                       else {
+                           try {
+                               data.shift()
+                               data = data.join(" ").split("to");
+                               let from = data[0];
+                               let to = data[1];
+                                let response = await translate(from, to);
+                                let translation = response.translation;
+                                
+                                console.log(response);
+
+                                api.sendMessage(" 🔄Translating... \n\n"+ '"' +`${translation.source_text}`+'"\n' + "      ⇩⇩⇩ \n" + '"' +`${translation.target_language}` + '"\n',event.threadID)
+                                
+                                if(translation === undefined || Object.entries(translation).length === 0){
+                                    throw new Error(`Failed to translate the phrase:\n '${from}'\n\n to: '${to}'.`, event.threadID, event.messageID)
+                                }
+                                let msg = `🔰Google Translate Result🔰\n\n`;
+                                msg += `➮ From: ${translation.source_language.split(" ")[0]}:\n\n`;
+                                msg += `"${translation.source_text}"\n\n`;
+	                            msg += `➮ To: ${translation.target_language}:\n\n`;
+	                            msg += `"${translation.target_text}"\n\n`;
+	                            msg += `©: Google Translate API\n`;
+                                msg += `©: @John Roy`;
+                                api.getUserID("John Roy Lapida Calimlim", (err,data) =>{
+                                let msgbody = {
+                                    body: msg,
+                                    mentions: [{
+                                    tag: "@John Roy",
+                                    id: data[0].userID
+                                       }]
+                                    };
+                                api.sendMessage(msgbody, event.threadID,event.messageID)
+                            })
+                        }
+                            catch (err) {
+                                api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
+                            }
+                        }
+                    }
+                
+                
+
+        
+     
+     
+     
                     else if (input.startsWith(prefix + "wiki")) {
  
                         let data = input.split(" ");
@@ -817,6 +983,8 @@ else if(input.startsWith(prefix + "define")){
                                 }
 
           
+          
+          
                     else if (input.startsWith(prefix + "motivation")) {
                         let rqt = qt();
                         rqt.then((response) => {
@@ -850,6 +1018,9 @@ if (d[0] == "img") {
                                         });
                                     });
                                 }
+                                
+                                
+                                
                                                            // GIF unsent test
 else if (d[0] == "gif") {
                                     var file = fs.createWriteStream("animated_image.gif");
