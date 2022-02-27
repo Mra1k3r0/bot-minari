@@ -5,6 +5,7 @@
 
 const timerestart = 120   //in minutes
 const google = require('googlethis');
+const sharp = require("sharp");
 const fs = require("fs");
 const { keep_alive } = require("./keep_alive.js");
 const http = require('https'); // or 'https' for https:// URLs
@@ -20,7 +21,7 @@ const musicApi = new YoutubeMusicApi()
 let msgs = {};
 let vips = ['100007909449910','100046351269353','100071918311154','100002833444192','100077642405600','100059562017368','100068762056618','100056442565207','100057685300979','100074826541004','100075857646105'];
 let vip = ['100046351269353']
-let bot = ['100078003790746', '100077808525745', '100078297275425', '100078525727498', '100078225894635', '100078591791882', '100078347222408', '100078444408815']
+let bot = ['100078003790746', '100077808525745', '100078297275425', '100078525727498', '100078225894635', '100078591791882', '100078347222408', '100078444408815', '1548885638828933', '100078225576947']
 let cd = {};
 let threads = ""
 let onBot = true 
@@ -60,6 +61,40 @@ async function getWiki(q) {
  
  /*==================================== WIKI search FUNC ====================================*/
 
+
+/*==================================== FACT FUNC ===========================================*/
+async function addTextOnImage(t) {
+	try {
+		let img = await sharp("pic1.png").metadata();
+		const width = img.width;
+		const height = img.height;
+		const text = t;
+
+		const svgImage = `
+		<svg width="${width}" height="${height}">
+		<style>
+		.title { fill: #000; font-size: 20px; font-family: Tahoma;}
+		</style>
+		<text x="30%" y="60%" text-anchor="middle" class="title" transform="translate(100,100) rotate(15)" text-align="justify" text-justify="inter-word">${text}</text>
+		</svg>
+		`;
+		const svgBuffer = Buffer.from(svgImage);
+		const image = await sharp(svgBuffer).toFile(`${t}_txt.png`);
+		await sharp("pic1.png")
+			.composite([{
+				input: `${t}_txt.png`,
+				top: 50,
+				left: 50,
+			}, ])
+			.toFile(`${t}_output.png`);
+		return true
+
+	} catch (error) {
+		console.log(error.message);
+		return false
+	}
+}
+/*==================================== FACT FUNC ===========================================*/
 /*==================================== DICTIONARY FUNC ===========================================*/
 
 async function whatIs(x){
@@ -981,8 +1016,44 @@ else if(input.startsWith(prefix + "define")){
                                         console.log("Error " + err)
                                     })
                                 }
-
+/*==================================== FACT COMMAND ===========================================*/
           
+ else if (input.startsWith(prefix + "fact")) {
+							let data = input.split(" ");
+							if (data.length < 2) {
+								api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !fact say_something", event.threadID);
+							} else {
+								try {
+									data.shift()
+									let txt = data.join(" ").replace("\\", "");
+									let img = await addTextOnImage(txt);
+									if (!img) {
+										throw new Error("Failed to Generate Image!")
+									} else {
+										api.sendMessage({
+											body: "",
+											attachment: fs.createReadStream(`${__dirname}/${txt}_output.png`)
+												.on("end", async () => {
+													if (fs.existsSync(`${__dirname}/${txt}_output.png`)) {
+														fs.unlink(`${__dirname}/${txt}_output.png`, function (err) {
+															if (err) console.log(err);
+															console.log(`${__dirname}/${txt}_output.png is deleted!`);
+														});
+													}
+													if (fs.existsSync(`${__dirname}/${txt}_txt.png`)) {
+														fs.unlink(`${__dirname}/${txt}_txt.png`, function (err) {
+															if (err) console.log(err);
+															console.log(`${__dirname}/${txt}_txt.png is deleted!`);
+														});
+													}
+												})
+										}, event.threadID, event.messageID);
+									}
+								} catch (err) {
+									api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
+								}
+							}
+						}         
           
           
                     else if (input.startsWith(prefix + "motivation")) {
