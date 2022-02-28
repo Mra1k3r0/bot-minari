@@ -4,7 +4,6 @@
 /////////////////////////////////////////////////////
 
 const timerestart = 120   //in minutes
-const port = 5000
 const google = require('googlethis');
 const sharp = require("sharp");
 const fs = require("fs");
