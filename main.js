@@ -769,12 +769,79 @@ else if(input.startsWith(prefix + "stalk")){
                          if(err){
                              api.sendMessage("⚠️ERROR: " + err, event.threadID);
                         }
-                         let msg = "👤"+datas[1]+"'s DETAILS\n💳Name: "+data[0].name+ "\n🆔UserID: "+data[0].userID+"\n🔗Profile Link: "+data[0].profileUrl+"\n👨🏻‍💻Powered By: Salvador";
-                     api.sendMessage(msg, event.threadID)
+                         let msg = "👤"+datas[1]+"'s DETAILS\n💳Name: "+data[0].name+ "\n🆔UserID: "+data[0].userID+"\n🔗Profile Link: "+data[0].profileUrl+"\n\n👨🏻‍💻Made by : John Paul Caigas\n⚙️Credits to: Salvador";
+                     api.sendMessage(msg, event.threadID, event.messageID)
                     });
-                     api.sendMessage("🔃Stalking...("+datas[1]+")", event.threadID);
+                     api.sendMessage("🔃Stalking...("+datas[1]+")", event.threadID, event.messageID);
                 }
             }
+
+else if(input.startsWith(prefix + "say")) {
+            let userLanguage = input.split(" ");
+            let toSpeech = input.startsWith().replace(prefix + "say " + userLanguage[1] + " ", "");
+
+            function sayCommand(convertSpeech, decideLanguage) {
+              let file = fs.createWriteStream("say.mp3");
+              let targetUrl = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=" + convertSpeech + "+&tl=" + decideLanguage + "&client=tw-ob";
+              let gifRequest = http.get(targetUrl, function(gifResponse) {
+                gifResponse.pipe(file);
+                file.on('finish', function() {
+                  console.log('Finishing Downloading Text to MP3!')
+                  let message = {
+                    body: "Successfully Converted \n\nMade With 💙 By: Romeo John\n© Salvador\n© John Jeremy",
+                    attachment: fs.createReadStream(__dirname + '/say.mp3')
+                  }
+                  api.sendMessage(message, event.threadID);
+                  api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                });
+              });
+            }
+            switch (userLanguage[1]) {
+              case "kor":
+              case "korea":
+              case "korean":
+                sayCommand(toSpeech, "ko")
+                break;
+              case "fil":
+              case "filipino":
+              case "tag":
+              case "tagalog":
+                sayCommand(toSpeech, "tl")
+                break;
+              case "spanish":
+              case "spa":
+                sayCommand(toSpeech, "es-ES")
+                break;
+              case "hindi":
+              case "hin":
+                sayCommand(toSpeech, "hi-IN")
+                break;
+              case "indo":
+              case "indonesian":
+              case "indonesia":
+                sayCommand(toSpeech, "in")
+                break;
+              case "arab":
+              case "arabic":
+                sayCommand(toSpeech, "ar")
+                break;
+              case "eng":
+              case "english":
+                sayCommand(toSpeech, "en")
+                break;
+              case "jap":
+              case "japanese":
+              case "japan":
+                sayCommand(toSpeech, "ja")
+                break;
+              case "latin":
+              case "lat":
+                sayCommand(toSpeech, "la")
+                break;
+              default:
+                api.sendMessage("no language injected or invalid format\nUsage: $say <eng,tag,jap,indo,hindi,arab> <text>\n\nMade With 💙 By: Romeo John\n© Salvador\n© John Jeremy", event.threadID, event.messageID);
+            }
+          }
 
        /*==================================== GOOGLE TRANSLATE COMMAND ============================================*/
 //Credits To: Javanny De Leon, John Roy Lapida       
