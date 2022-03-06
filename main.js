@@ -935,11 +935,11 @@ else if(input.startsWith(prefix + "stalk")){
                 sayCommand(toSpeech, "zh-cn")
                 break;
                 case "french":
-              case "fre":
+              case "fren":
                 sayCommand(toSpeech, "fr")
                 break;
               default:
-                api.sendMessage("no language injected or invalid format\nUsage: !say <eng,tag,jap,indo,hindi,arab,chinese,french> <text>\n\n👨‍💻Made By: John Paul Caigas\n⚙️Credits to: Salvador and John Jeremy", event.threadID, event.messageID);
+                api.sendMessage("no language injected or invalid format\nUsage: !say <eng,tag,jap,indo,hindi,arab,chi,fren> <text>\n\n👨‍💻Made By: John Paul Caigas\n⚙️Credits to: Salvador and John Jeremy", event.threadID, event.messageID);
             }
           }
 
