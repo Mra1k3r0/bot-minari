@@ -763,16 +763,16 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
 else if(input.startsWith(prefix + "stalk")){
                  let datas = input.split(" ");
                  if(datas.length < 2){
-                    api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !stalk fbusername", message.threadID);
+                    api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !stalk fbusername", event.threadID);
                  } else {
                     api.getUserID(datas[1], (err, data) => {
                          if(err){
-                             api.sendMessage("⚠️ERROR: " + err, message.threadID);
+                             api.sendMessage("⚠️ERROR: " + err, event.threadID);
                         }
                          let msg = "👤"+datas[1]+"'s DETAILS\n💳Name: "+data[0].name+ "\n🆔UserID: "+data[0].userID+"\n🔗Profile Link: "+data[0].profileUrl+"\n👨🏻‍💻Powered By: Salvador";
-                     api.sendMessage(msg, message.threadID)
+                     api.sendMessage(msg, event.threadID)
                     });
-                     api.sendMessage("🔃Stalking...("+datas[1]+")", message.threadID);
+                     api.sendMessage("🔃Stalking...("+datas[1]+")", event.threadID);
                 }
             }
 
