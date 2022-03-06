@@ -602,9 +602,9 @@ if (input.startsWith(prefix + "leech")) {
                     else if ((input.startsWith(prefix + "help") || input.startsWith(prefix + "hslp")) && !bot.includes(event.senderID)){
  
                         let data = input.split(" ");
-                        if (data.length < 2) {
+                     //   if (data.length < 2) {
                             api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n🎙️" + prefix + "say\n\n📵 " + prefix + "stalk\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
-                            }
+                    //        }
                             }
                             
          if((input2.includes("pogi") || 
@@ -772,10 +772,10 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                             else if ((input.startsWith(prefix + "others"))&& !bot.includes(event.senderID)){
  
                         let data = input.split(" ");
-                        if (data.length < 2) {
+         //               if (data.length < 2) {
                             api.sendMessage("🎉 Other Command Lists (Trash Commands!) 🎉\n\ngoodmorning\ngoodafternoon\ngoodnight\nganda\npogi\ngwapo\n\n⚠️ This commands is for entertainment purposes only. If you easier got offended please don't use this commands cuz it's not for you!\n\n⚠️ We removed *Hi* and *Hello* commands from this bot.", event.threadID, event.messageID);
                             
-                            }
+           //                 }
                             }
                             else if ((input.startsWith(prefix + "fbid"))&& !bot.includes(event.senderID)){
  
