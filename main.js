@@ -297,7 +297,36 @@ body: `Good Afternoon @${data[event.senderID].firstName}, How's your day?\n\n�
                         }
 
                                 
-                         
+if((input2.includes("love") || 
+input2.includes("mahal") || input2.includes("lab"))&& !bot.includes(event.senderID)){
+	api.setMessageReaction("🤮", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                                api.sendMessage("Iww, yuck, kadirdir!! nainlove sa bot wala sigurong nagkakagusto sau🤢🤮", event.threadID, event.messageID);
+                            }
+                        })
+}
+
+if((input2.includes("kain") || 
+input2.includes("eat") || input2.includes("kaim"))&& !bot.includes(event.senderID)){
+	api.setMessageReaction("🍜", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                                api.sendMessage({
+body: `Eatwell pi, @${data[event.senderID].firstName} pakabusog ka ha! usap pa tayo mamaya☺️🥰\n\n💠 Auto Reply by: PaulBotX`,
+                            mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+                                            }
+                                            })
+                                            }                         
 
                          if((input2.includes("vivi") || 
 input2.includes("bot"))&& !bot.includes(event.senderID)){
@@ -310,7 +339,24 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                             }
                         })
 }   
-                            
+                                               if(input2.includes("haha") || input2.includes("lmao") || input2.includes("lol") || input2.includes("😂") || input2.includes("😹") || input2.includes("🤣") || input2.includes("😆") || input2.includes("😄") || input2.includes("😅") || input2.includes("xd")){
+					        	api.setMessageReaction("😆", event.messageID, (err) => {}, true)
+					}
+					if(input2.includes("kawawa") || input2.includes("sad") || input2.includes("agoi") || input2.includes("sakit") ||input2.includes("skit")){
+					        	api.setMessageReaction("😢", event.messageID, (err) => {}, true)
+					}
+					
+					if((input2.includes("pagasa") || 
+input2.includes("aasa"))&& !bot.includes(event.senderID)){
+	api.setMessageReaction("🙁", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                                api.sendMessage("mag move-on kana lods, wag kanang umasa na babalikan kapa niya. just accept the fact na wala na syang gusto sayo😕", event.threadID, event.messageID);
+                            }
+                        })
+}
                             if((input2.includes("panget") ||            input2.includes("ngetpa") ||            input2.includes("ngitpa") || input2.includes("pangit") || input2.includes("ugly") || input2.includes("kowai"))&& !bot.includes(event.senderID)){
                            	   	let data = input;
                                            if (!vips.includes(event.senderID)){
@@ -557,7 +603,7 @@ if (input.startsWith(prefix + "leech")) {
  
                         let data = input.split(" ");
                         if (data.length < 2) {
-                            api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
+                            api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n🎙️" + prefix + "say\n\n📵 " + prefix + "stalk\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
                             }
                             }
                             
@@ -572,6 +618,37 @@ input2.includes("gwapo") || input2.includes("ganda") || input2.includes("shawty"
                             }
                         })
 }
+if((input2.includes("love") || 
+input2.includes("mahal") || input2.includes("lab"))&& !bot.includes(event.senderID)){
+	api.setMessageReaction("🤮", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                                api.sendMessage("Iww, yuck, kadirdir!! nainlove sa bot wala sigurong nagkakagusto sau🤢🤮", event.threadID, event.messageID);
+                            }
+                        })
+}
+
+if((input2.includes("kain") || 
+input2.includes("eat") || input2.includes("kaim"))&& !bot.includes(event.senderID)){
+	api.setMessageReaction("🍜", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                                api.sendMessage({
+body: `Eatwell pi, @${data[event.senderID].firstName} pakabusog ka ha! usap pa tayo mamaya☺️🥰\n\n💠 Auto Reply by: PaulBotX`,
+                            mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+                                            }
+                                            })
+                                            }
+
 if((input2.includes("morning") || input2.includes("umaga") || input2.includes("murning"))&& !bot.includes(event.senderID)){
 	api.setMessageReaction("🌄", event.messageID, (err) => {}, true)
                         api.getUserInfo(event.senderID, (err, data) => {
@@ -708,12 +785,24 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                             
                             }
                             }
-                            if(input2.includes("haha") || input2.includes("lmao") || input2.includes("lol") || input2.includes("xd")){
+                            if(input2.includes("haha") || input2.includes("lmao") || input2.includes("lol") || input2.includes("😂") || input2.includes("😹") || input2.includes("🤣") || input2.includes("😆") || input2.includes("😄") || input2.includes("😅") || input2.includes("xd")){
 					        	api.setMessageReaction("😆", event.messageID, (err) => {}, true)
 					}
 					if(input2.includes("kawawa") || input2.includes("sad") || input2.includes("agoi") || input2.includes("sakit") ||input2.includes("skit")){
 					        	api.setMessageReaction("😢", event.messageID, (err) => {}, true)
 					}
+					
+					if((input2.includes("pagasa") || 
+input2.includes("aasa"))&& !bot.includes(event.senderID)){
+	api.setMessageReaction("🙁", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                                api.sendMessage("mag move-on kana lods, wag kanang umasa na babalikan kapa niya. just accept the fact na wala na syang gusto sayo😕", event.threadID, event.messageID);
+                            }
+                        })
+}
 					
 					else if (input.startsWith(prefix + "slap")) {
 	api.setMessageReaction("👋", event.messageID, (err) => {}, true)
@@ -760,6 +849,8 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                         })
 }
 
+       /*==================================== STALK COMMAND ============================================*/
+//Credits To: Salvador
 else if(input.startsWith(prefix + "stalk")){
                  let datas = input.split(" ");
                  if(datas.length < 2){
@@ -775,10 +866,11 @@ else if(input.startsWith(prefix + "stalk")){
                      api.sendMessage("🔃Stalking...("+datas[1]+")", event.threadID, event.messageID);
                 }
             }
-
+       /*==================================== TEXT TO SPEACH COMMAND ============================================*/
+//Credits To: Salvador, John Jeremy Antiguo, Romeo    
          if(input2.includes(prefix + "say")) {
             let userLanguage = input.split(" ");
-            let toSpeech = input2.includes().replace("!say " + userLanguage[1] + " ", "");
+            let toSpeech = input2.replace("!say " + userLanguage[1] + " ", "");
 
             function sayCommand(convertSpeech, decideLanguage) {
               let file = fs.createWriteStream("say.mp3");
@@ -788,10 +880,10 @@ else if(input.startsWith(prefix + "stalk")){
                 file.on('finish', function() {
                   console.log('Finishing Downloading Text to MP3!')
                   let message = {
-                    body: "Successfully Converted \n\nMade With 💙 By: Romeo John\n© Salvador\n© John Jeremy",
+                    body: `Successfully Converted \n\n**${convertSpeech} in ${decideLanguage}** \n\n👨‍💻Made By: John Paul Caigas\n⚙️Credits to: Salvador and John Jeremy`,
                     attachment: fs.createReadStream(__dirname + '/say.mp3')
                   }
-                  api.sendMessage(message, event.threadID);
+                  api.sendMessage(message, event.threadID, event.messageID);
                   api.setMessageReaction("✅", event.messageID, (err) => {}, true);
                 });
               });
@@ -838,8 +930,16 @@ else if(input.startsWith(prefix + "stalk")){
               case "lat":
                 sayCommand(toSpeech, "la")
                 break;
+                case "chinese":
+              case "chi":
+                sayCommand(toSpeech, "zh-cn")
+                break;
+                case "french":
+              case "fre":
+                sayCommand(toSpeech, "fr")
+                break;
               default:
-                api.sendMessage("no language injected or invalid format\nUsage: $say <eng,tag,jap,indo,hindi,arab> <text>\n\nMade With 💙 By: Romeo John\n© Salvador\n© John Jeremy", event.threadID, event.messageID);
+                api.sendMessage("no language injected or invalid format\nUsage: !say <eng,tag,jap,indo,hindi,arab,chinese,french> <text>\n\n👨‍💻Made By: John Paul Caigas\n⚙️Credits to: Salvador and John Jeremy", event.threadID, event.messageID);
             }
           }
 
@@ -895,7 +995,13 @@ else if (input.startsWith(prefix + "translate")) {
                 
                 
 
-        
+       else if (input.startsWith("!")) {
+ 
+                        let data = input.split(" ");
+                        if (data.length < 2) {
+                            api.sendMessage("⚠️Invalid There's no Available Command Like that!\n💡Use !help for more info", event.threadID, event.messageID); 
+                       }     
+                          }
      
      
      
@@ -903,7 +1009,7 @@ else if (input.startsWith(prefix + "translate")) {
  
                         let data = input.split(" ");
                         if (data.length < 2) {
-                            api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !wiki word", event.threadID);
+                            api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !wiki word", event.threadID, );
                         } else {
                             try {
                                 data.shift()
