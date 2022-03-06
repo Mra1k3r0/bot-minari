@@ -776,7 +776,7 @@ else if(input.startsWith(prefix + "stalk")){
                 }
             }
 
-else if(input.startsWith(prefix + "say")) {
+else if(input.startsWith().includes(prefix + "say")) {
             let userLanguage = input.split(" ");
             let toSpeech = input.startsWith().replace("!say " + userLanguage[1] + " ", "");
 
