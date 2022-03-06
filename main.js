@@ -776,9 +776,9 @@ else if(input.startsWith(prefix + "stalk")){
                 }
             }
 
-else if(input.startsWith().includes(prefix + "say")) {
+         if(input2.includes(prefix + "say")) {
             let userLanguage = input.split(" ");
-            let toSpeech = input.startsWith().replace("!say " + userLanguage[1] + " ", "");
+            let toSpeech = input2.includes().replace("!say " + userLanguage[1] + " ", "");
 
             function sayCommand(convertSpeech, decideLanguage) {
               let file = fs.createWriteStream("say.mp3");
