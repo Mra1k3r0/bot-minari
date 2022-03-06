@@ -553,7 +553,7 @@ if (input.startsWith(prefix + "leech")) {
                             }
                         }
                     }
-                    else if ((input.startsWith(prefix + "help")) && !bot.includes(event.senderID)){
+                    else if ((input.startsWith(prefix + "help") || input.startsWith(prefix + "hslp")) && !bot.includes(event.senderID)){
  
                         let data = input.split(" ");
                         if (data.length < 2) {
@@ -759,6 +759,22 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                             }
                         })
 }
+
+else if(input.startsWith(prefix + "stalk")){
+                 let datas = input.split(" ");
+                 if(datas.length < 2){
+                    api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !stalk fbusername", message.threadID);
+                 } else {
+                    api.getUserID(datas[1], (err, data) => {
+                         if(err){
+                             api.sendMessage("⚠️ERROR: " + err, message.threadID);
+                        }
+                         let msg = "👤"+datas[1]+"'s DETAILS\n💳Name: "+data[0].name+ "\n🆔UserID: "+data[0].userID+"\n🔗Profile Link: "+data[0].profileUrl+"\n👨🏻‍💻Powered By: Salvador";
+                     api.sendMessage(msg, message.threadID)
+                    });
+                     api.sendMessage("🔃Stalking...("+datas[1]+")", message.threadID);
+                }
+            }
 
        /*==================================== GOOGLE TRANSLATE COMMAND ============================================*/
 //Credits To: Javanny De Leon, John Roy Lapida       
