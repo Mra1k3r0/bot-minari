@@ -992,15 +992,7 @@ else if (input.startsWith(prefix + "translate")) {
                         }
                     }
                 
-                
 
-       else if (input.startsWith("!")) {
- 
-                        let data = input.split(" ");
-                        if (data.length < 2) {
-                            api.sendMessage("⚠️Invalid There's no Available Command Like that!\n💡Use !help for more info", event.threadID, event.messageID); 
-                       }     
-                          }
      
      
      
