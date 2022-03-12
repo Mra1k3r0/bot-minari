@@ -222,7 +222,28 @@ let datas = input.split(" ");
 
 }
             
-   
+   if (input2.includes("hi") || input2.includes("hello") || input2.includes("yo!") || input2.includes("hallo") || input2.includes("hola") || input2.includes("helo") && !bot.includes(event.senderID)) {
+	api.setMessageReaction("👋", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                            	
+                         api.sendMessage({
+                                                body:`Hi, @${data[event.senderID].firstName}. how are you?`,
+                                                attachment: fs.createReadStream(__dirname + '/hi-hello.gif'),
+                                                mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+
+
+                            }
+                        })
+}
+
                   
  if(input.startsWith(prefix + "stalk")){
                  let datas = input.split(" ");
@@ -643,7 +664,13 @@ if (input.startsWith(prefix + "leech")) {
                     else if ((input.startsWith(prefix + "help") || input.startsWith(prefix + "hslp")) && !bot.includes(event.senderID)){
  
                         
-   api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n🎙️ " + prefix + "say\n\n📵 " + prefix + "stalk\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
+   api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n🎙️ " + prefix + "say\n\n📵 " + prefix + "stalk\n\n😹 " + prefix + "meme\n\n🍙 " + prefix + "anime\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
+                        
+                            }
+                            else if ((input.startsWith(prefix + "anime")) && !bot.includes(event.senderID)){
+ 
+                        
+   api.sendMessage("**Anime Cmds**\n\nhug, kiss, slap, pat, soon...", event.threadID, event.messageID);                           
                         
                             }
                             
@@ -760,10 +787,155 @@ body: `Good Afternoon @${data[event.senderID].firstName}, How's your day?\n\n�
                             })
                         
                         }
+else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "meme")) && !bot.includes(event.senderID)){
+                                
+          axios.get('https://meme-api.herokuapp.com/gimme/memes')
+                  .then(response => {
+                  	var mention = Object.keys(event.mentions)[0];
+                     var file = fs.createWriteStream("memes.png");
+                     var targetUrl = response.data.url;
+                     var gifRequest = http.get(targetUrl, function (gifResponse) {
+                        gifResponse.pipe(file);
+                        file.on('finish', function () {
+                           console.log('Memes Downloading!')
+                           var message = {
+                              body: response.data.title + "\n\nAuthor: " + response.data.author,
+                              attachment: fs.createReadStream(__dirname + '/memes.png')
+                           }
+                           api.sendMessage(message, event.threadID, event.messageID);
+                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                        });
+                     });
+                  })
+                  .catch(error => {
+                     api.sendMessage("Failed to generate Memes!", event.threadID, event.messageID);
+                  })                      
+                        }        
+                        
+                        else if ((input.startsWith(prefix + "pat")) && !bot.includes(event.senderID)){
+                                
+          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/pat')
+                  .then(response => {
+                  	var mention = Object.keys(event.mentions)[0];
+                  let tag = event.mentions[mention].replace("@", "");
+                     var file = fs.createWriteStream("pat.gif");
+                     var targetUrl = response.data.url;
+                     var gifRequest = http.get(targetUrl, function (gifResponse) {
+                        gifResponse.pipe(file);
+                        file.on('finish', function () {
+                           console.log('GIF Downloading!')
+                           var message = {
+                              body: "Pats, " + tag + ". Goodgirl!!☺️",
+                              
+                              mentions: [{
+          tag: tag,
+          id: Object.keys(event.mentions)[0]
+        }],
+                              attachment: fs.createReadStream(__dirname + '/pat.gif')
+                           }
+                           api.sendMessage(message, event.threadID, event.messageID);
+                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                        });
+                     });
+                  })
+                  .catch(error => {
+                     api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
+                  })                      
+                        }        
+                        
+                        else if ((input.startsWith(prefix + "slap")) && !bot.includes(event.senderID)){
+                                
+          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/slap')
+                  .then(response => {
+                  	var mention = Object.keys(event.mentions)[0];
+                  let tag = event.mentions[mention].replace("@", "");
+                     var file = fs.createWriteStream("slap.gif");
+                     var targetUrl = response.data.url;
+                     var gifRequest = http.get(targetUrl, function (gifResponse) {
+                        gifResponse.pipe(file);
+                        file.on('finish', function () {
+                           console.log('GIF Downloading!')
+                           var message = {
+                              body: "Slapped! " + tag + "\n\n*Sorry I thought there's a mosquito*",
+                              
+                              mentions: [{
+          tag: tag,
+          id: Object.keys(event.mentions)[0]
+        }],
+                              attachment: fs.createReadStream(__dirname + '/slap.gif')
+                           }
+                           api.sendMessage(message, event.threadID, event.messageID);
+                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                        });
+                     });
+                  })
+                  .catch(error => {
+                     api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
+                  })                      
+                        }      
 
+else if ((input.startsWith(prefix + "hug")) && !bot.includes(event.senderID)){
                                 
+          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/hug')
+                  .then(response => {
+                  	var mention = Object.keys(event.mentions)[0];
+                  let tag = event.mentions[mention].replace("@", "");
+                     var file = fs.createWriteStream("hug.gif");
+                     var targetUrl = response.data.url;
+                     var gifRequest = http.get(targetUrl, function (gifResponse) {
+                        gifResponse.pipe(file);
+                        file.on('finish', function () {
+                           console.log('GIF Downloading!')
+                           var message = {
+                              body: "hugs you tight " + tag + "☺️\n\nsometimes all you need is a hug~",
+                              
+                              mentions: [{
+          tag: tag,
+          id: Object.keys(event.mentions)[0]
+        }],
+                              attachment: fs.createReadStream(__dirname + '/hug.gif')
+                           }
+                           api.sendMessage(message, event.threadID, event.messageID);
+                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                        });
+                     });
+                  })
+                  .catch(error => {
+                     api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
+                  })                      
+                        }     
+else if ((input.startsWith(prefix + "kiss")) && !bot.includes(event.senderID)){
                                 
-                                
+          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/getlink5')
+                  .then(response => {
+                  	var mention = Object.keys(event.mentions)[0];
+                  let tag = event.mentions[mention].replace("@", "");
+                     var file = fs.createWriteStream("kiss.gif");
+                     var targetUrl = response.data.url;
+                     var gifRequest = http.get(targetUrl, function (gifResponse) {
+                        gifResponse.pipe(file);
+                        file.on('finish', function () {
+                           console.log('GIF Downloading!')
+                           var message = {
+                              body:  tag + ", I love you very much!❤️",
+                              
+                              mentions: [{
+          tag: tag,
+          id: Object.keys(event.mentions)[0]
+        }],
+                              attachment: fs.createReadStream(__dirname + '/kiss.gif')
+                           }
+                           api.sendMessage(message, event.threadID, event.messageID);
+                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                        });
+                     });
+                  })
+                  .catch(error => {
+                     api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
+                  })                      
+                        }        
+     
+
                             
                          if((input2.includes("vivi") || 
 input2.includes("bot"))&& !bot.includes(event.senderID)){
@@ -801,11 +973,11 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
                             }
                         })
 }        
-                            else if ((input.startsWith(prefix + "notes"))&& !bot.includes(event.senderID)){
+                            else if ((input.startsWith(prefix + "about"))&& !bot.includes(event.senderID)){
  
                         let data = input.split(" ");
                         if (data.length < 2) {
-                            api.sendMessage("⚠️ Notes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nChat me if you incounter a problem here:\nhttps://m.me/johnpaul.caigas001\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);
+                            api.sendMessage("⚠️ About:\n\n*This Bot are made from FCA-UNOFFICIAL and for educational purpose only!\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nChat me if you incounter a problem here:\nhttps://m.me/johnpaul.caigas001\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas\n\nCredits to:\nSalvador\nJohn Jeremy Antiguo\nEarl\Ryann\nJovanny\nJerson\nRomeo\nAll of us are bot", event.threadID, event.messageID);
                             
                             }
                             }
@@ -813,7 +985,7 @@ input2.includes("bot"))&& !bot.includes(event.senderID)){
  
                         let data = input.split(" ");
          //               if (data.length < 2) {
-                            api.sendMessage("🎉 Other Command Lists (Trash Commands!) 🎉\n\ngoodmorning\ngoodafternoon\ngoodnight\nganda\npogi\ngwapo\n\n⚠️ This commands is for entertainment purposes only. If you easier got offended please don't use this commands cuz it's not for you!\n\n⚠️ We removed *Hi* and *Hello* commands from this bot.", event.threadID, event.messageID);
+                            api.sendMessage("🎉Auto Greet and Auto Reply🎉\n\ngoodmorning\ngoodafternoon\ngoodnight\nganda\npogi\ngwapo\n\n⚠️ This commands is for entertainment purposes only. If you easier got offended please don't use this commands cuz it's not for you!\n\n⚠️ We removed *Hi* and *Hello* commands from this bot.", event.threadID, event.messageID);
                             
            //                 }
                             }
@@ -844,35 +1016,7 @@ input2.includes("aasa"))&& !bot.includes(event.senderID)){
                         })
 }
 					
-					else if (input.startsWith(prefix + "slap")) {
-	
-                        api.getUserInfo(event.senderID, (err, data) => {
-                            if(err){
-                                console.log(err)
-                            }
-//   if (!vip.includes(event.senderID)){
-                        //    api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
-//   }else{
-    api.setMessageReaction("👋", event.messageID, (err) => {}, true)
-      api.sendMessage({
-                                                body:"You got slapped by " + '@'+ data[event.senderID]['firstName'],
-                                                attachment: fs.createReadStream(__dirname + '/slap.gif'),
-                                                mentions: [{
-                                                    tag: '@'+data[event.senderID]['firstName'],
-                                                    id: event.senderID,
-                                                    fromIndex: 0,                                                  
-                                                }]
-                                            }, event.threadID, event.messageID);
-
-
-                         //}  
-                            
-                             
-                            
-                        })
-            
-                   
-}
+					
 
        if(input2.includes("yamete") && !bot.includes(event.senderID)) {
 	
@@ -989,6 +1133,28 @@ input2.includes("aasa"))&& !bot.includes(event.senderID)){
                          api.sendMessage({
                                                 body:`You got slapped by @${data[event.senderID].firstName}`,
                                                 attachment: fs.createReadStream(__dirname + '/slap.gif'),
+                                                mentions: [{
+                                                    tag: `@${data[event.senderID].firstName}`,
+                                                    id: event.senderID,
+                                                    fromIndex: 0,                                                  
+                                                }]
+                                            }, event.threadID, event.messageID);
+
+
+                            }
+                        })
+}
+
+else if (input2.includes("hi") || input2.includes("hello") || input2.includes("yo!") || input2.includes("hallo") || input2.includes("hola") || input2.includes("helo") && !bot.includes(event.senderID)) {
+	api.setMessageReaction("👋", event.messageID, (err) => {}, true)
+                        api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }else{
+                            	
+                         api.sendMessage({
+                                                body:`Hi, @${data[event.senderID].firstName}. how are you?`,
+                                                attachment: fs.createReadStream(__dirname + '/hi-hello.gif'),
                                                 mentions: [{
                                                     tag: `@${data[event.senderID].firstName}`,
                                                     id: event.senderID,
