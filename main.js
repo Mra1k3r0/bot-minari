@@ -9,7 +9,10 @@ const sharp = require("sharp");
 const fs = require("fs");
 const { keep_alive } = require("./keep_alive.js");
 const http = require('https'); // or 'https' for https:// URLs
-const login = require("fca-unofficial");
+//const login = require("fca-unofficial");
+const login = require("fca-fortesting-unofficial");
+//const login = require("helyt");
+//const login = require("fca-horizon-remake");
 const axios = require("axios");
 const YoutubeMusicApi = require('youtube-music-api')
 const ytdl = require('ytdl-core');
@@ -19,9 +22,10 @@ ffmpegs.setFfmpegPath(ffmpeg.path);
 const musicApi = new YoutubeMusicApi()
 // GLOBAL MESSAGE STORAGE
 let msgs = {};
-let vips = ['100007909449910','100046351269353','100071918311154','100002833444192','100077642405600','100059562017368','100068762056618','100056442565207','100057685300979','100074826541004','100075857646105'];
-let vip = ['100046351269353']
-let bot = ['100078003790746', '100077808525745', '100078297275425', '100078525727498', '100078225894635', '100078591791882', '100078347222408', '100078444408815', '1548885638828933', '100078225576947']
+let vips = ['100007909449910','100046351269353','100071918311154','100002833444192','100077642405600','100059562017368','100068762056618','100056442565207','100057685300979','100074826541004','100075857646105', '100077588247522'];
+let vip = ['100046351269353', '100077588247522']
+let bot = ['100078003790746', '100077808525745', '100078297275425', '100078525727498', '100078225894635', '100078591791882', '100078347222408', '100078444408815', '1548885638828933', '100078225576947', '100078444408815', '100011343529559', '100078347222408']
+let admin = ['']
 let cd = {};
 let threads = ""
 let onBot = true 
@@ -180,10 +184,10 @@ async function qt() {
 }
 /*==================================== RANDOM QOUTES FUNC ====================================*/
 
-login({ appState: JSON.parse(fs.readFileSync('fbstate.json', 'utf8')) }, (err, api) => {
+login({ appState: JSON.parse(process.env['FBSTATE'] )}, (err, api) => {
     if (err) return console.error(err);
     api.setOptions({ listenEvents: true, selfListen: false });
-    const listenEmitter = api.listen(async (err, event) => {
+    const listenEmitter = api.listenMqtt(async (err, event) => {
         if (err) return console.error(err);
         switch (event.type) {
             case "message_reply":   
@@ -200,7 +204,41 @@ let input = event.body;
                     myDay = new Date().getHours() + 8
                 }
                 msgs[msgid] = input;
-                        
+
+if (input.startsWith(prefix + "unsent")){
+let datas = input.split(" ");
+                 if(datas.length < 2){
+                   
+                      if (!vip.includes(event.senderID)){
+                            api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
+   }else{
+                     //api.sendMessage(message.body, message.threadID, (err, messageInfo) => {
+                if(err) return console.error(err);
+                      
+                api.unsendMessage(event.messageReply.messageID)
+       //               })                               
+                 }
+}
+
+}
+            
+   
+                  
+ if(input.startsWith(prefix + "stalk")){
+                 let datas = input.split(" ");
+                 if(datas.length < 2){
+                    api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !stalk fbusername", event.threadID);
+                 } else {
+                    api.getUserID(datas[1], (err, data) => {
+                         if(err){
+                             api.sendMessage("⚠️ERROR: " + err, event.threadID);
+                        }
+                         let msg = "👤"+datas[1]+"'s DETAILS\n💳Name: "+data[0].name+ "\n🆔UserID: "+data[0].userID+"\n🔗Profile Link: "+data[0].profileUrl+"\n\n👨🏻‍💻Made by : John Paul Caigas\n⚙️Credits to: Salvador";
+                     api.sendMessage(msg, event.threadID, event.messageID)
+                    });
+                     api.sendMessage("🔃Stalking...("+datas[1]+")", event.threadID, event.messageID);
+                }
+                           }
             if(input2.includes("vilat")){
             	api.setMessageReaction("😾", event.messageID, (err) => {}, true)
                         api.getUserInfo(event.senderID, (err, data) => {
@@ -498,15 +536,18 @@ if(vips.includes(event.senderID)){
                             }
                         }
            
-                        else if (input.startsWith(prefix + "admin")) {
- 
+                        if (input.startsWith(prefix + "admin")) {                                                         
                         let data = input.split(" ");
-                        if (data.length < 2) {
-                            api.sendMessage("Admin commands\n\nBot: Sleep\nBot: Wake up\nBot: Activate\nBot: Kill\nStatus\n\nUnsent: Off \nUnsent: On\nUnsent: Kill\nUnsent: Activate\n\n\n💠 Made By: John Paul Caigas", event.threadID, event.messageID);
+                       if (data.length < 2) {
+                                                                                                                                             api.sendMessage("Admin commands\n\nBot: Sleep\nBot: Wake up\nBot: Activate\nBot: Kill\nStatus\n\nUnsent: Off \nUnsent: On\nUnsent: Kill\nUnsent: Activate\n\n\n💠 Made By: John Paul Caigas", event.threadID, event.messageID);
                             
-                            }
-                            }
-                    }
+                            
+                            } 
+                        }
+}
+                  
+                
+
                     
 /*================== UNSENT ENABLE & DISABLE COMMAND ==================*/                    
                         
@@ -602,7 +643,7 @@ if (input.startsWith(prefix + "leech")) {
                     else if ((input.startsWith(prefix + "help") || input.startsWith(prefix + "hslp")) && !bot.includes(event.senderID)){
  
                         
-   api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n🎙️" + prefix + "say\n\n📵 " + prefix + "stalk\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
+   api.sendMessage("🎉Commands List🎉\n--------------------------------------\n\nℹ️ " + prefix + "help\n\n▶️ " + prefix + "play (song_title) \n\n⬇️ " + prefix +"leech (yt_url)\n\n💃 " + prefix + "tiktokdl (tiktok_url)\n\n🤩 " + prefix + "motivation \n\n🔎 " + prefix + "wiki (word)\n\n🔎 " + prefix + "define (word)\n\n👥 " + prefix + "fbid\n\n⚙️ " + prefix + "admin\n\n🎖️ " + prefix + "animequote\n\n📖 "+ prefix + "bible \n\n🤖 " + prefix + "translate\n\n💯 " + prefix + "fact\n\n🎙️ " + prefix + "say\n\n📵 " + prefix + "stalk\n\n📦 " + prefix + "others\n\n\nNotes:\n\n*If your request is still on processing, plaese wait until it is finished before requesting a new one!\n\n*Please do not spam, be responsible when using this command to avoid getting blocked!\n\n*One request at a time only, let the Bot do its job!\n\nThank you for your understanding, have a good day🥰!\n\n\n💠 Made by: John Paul Caigas", event.threadID, event.messageID);                           
                         
                             }
                             
@@ -804,12 +845,16 @@ input2.includes("aasa"))&& !bot.includes(event.senderID)){
 }
 					
 					else if (input.startsWith(prefix + "slap")) {
-	api.setMessageReaction("👋", event.messageID, (err) => {}, true)
+	
                         api.getUserInfo(event.senderID, (err, data) => {
                             if(err){
                                 console.log(err)
-                            }else{
-                         api.sendMessage({
+                            }
+//   if (!vip.includes(event.senderID)){
+                        //    api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
+//   }else{
+    api.setMessageReaction("👋", event.messageID, (err) => {}, true)
+      api.sendMessage({
                                                 body:"You got slapped by " + '@'+ data[event.senderID]['firstName'],
                                                 attachment: fs.createReadStream(__dirname + '/slap.gif'),
                                                 mentions: [{
@@ -820,10 +865,118 @@ input2.includes("aasa"))&& !bot.includes(event.senderID)){
                                             }, event.threadID, event.messageID);
 
 
-                            }
+                         //}  
+                            
+                             
+                            
                         })
+            
+                   
 }
 
+       if(input2.includes("yamete") && !bot.includes(event.senderID)) {
+	
+                       api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }
+//   if (!vip.includes(event.senderID)){
+                        //    api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
+//   }else{
+    api.setMessageReaction("😣", event.messageID, (err) => {}, true)
+      api.sendMessage({
+                                                body:">_<",
+                                                attachment: fs.createReadStream(__dirname + '/yamate.mp3')
+
+        
+                                            }, event.threadID, event.messageID);
+
+
+                          //  }  
+                            
+                             
+                            
+                        })
+            
+                   
+}
+         if(input2.includes("ara ara") && !bot.includes(event.senderID)) {
+	
+                       api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }
+//   if (!vip.includes(event.senderID)){
+                        //    api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
+//   }else{
+    api.setMessageReaction("🥰", event.messageID, (err) => {}, true)
+      api.sendMessage({
+                                                body:"Ara ara~",
+                                                attachment: fs.createReadStream(__dirname + '/ara.mp3')
+
+        
+                                            }, event.threadID, event.messageID);
+
+
+                          //  }  
+                            
+                             
+                            
+                        })            
+                   
+                            }
+           if(input2.includes("amogus") || input2.includes("sus") || input2.includes("vent") && !bot.includes(event.senderID)) {
+	
+                       api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }
+//   if (!vip.includes(event.senderID)){
+                        //    api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
+//   }else{
+    api.setMessageReaction("😱", event.messageID, (err) => {}, true)
+      api.sendMessage({
+                                                body:"ඞ",
+                                                attachment: fs.createReadStream(__dirname + '/amogus.mp3')
+
+        
+                                            }, event.threadID, event.messageID);
+
+
+                          //  }  
+                            
+                             
+                            
+                        })
+            
+                   
+           }
+             if(input2.includes("vineboom") || input2.includes("darock") || input2.includes("therock") && !bot.includes(event.senderID)) {
+	
+                       api.getUserInfo(event.senderID, (err, data) => {
+                            if(err){
+                                console.log(err)
+                            }
+//   if (!vip.includes(event.senderID)){
+                        //    api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
+//   }else{
+    api.setMessageReaction("🤨", event.messageID, (err) => {}, true)
+      api.sendMessage({
+                                                body:"...",
+                                                attachment: fs.createReadStream(__dirname + '/vineboom.gif')
+
+        
+                                            }, event.threadID, event.messageID);
+
+
+                          //  }  
+                            
+                             
+                            
+                        })
+            
+                   
+             }
 
      
   else if (input.startsWith("test2")) {
@@ -992,9 +1145,9 @@ else if (input.startsWith(prefix + "translate")) {
                         }
                     }
                 
+                
 
-     
-     
+       
      
                     else if (input.startsWith(prefix + "wiki")) {
  
