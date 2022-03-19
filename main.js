@@ -1778,7 +1778,7 @@ else if ((input.startsWith(prefix + "kiss")) && !bot.includes(event.senderID)){
                   })                      
                         }        
 
-else if ((input.startsWith(prefix + "uwu")) && !bot.includes(event.senderID)){
+else if ((input.startsWith(prefix + "haist")) && !bot.includes(event.senderID)){
                                 if (!vip.includes(event.senderID)){
                           api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
  }else{
