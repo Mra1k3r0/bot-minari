@@ -2833,7 +2833,7 @@ else if(input.startsWith(prefix + "test")){
                                    .then(response => {
                        
                                 ffmpegs(strm)
-                                    .audioBitrate(256)
+                                    .audioBitrate(128)
                                     .save(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
                                     .on("end", () => {
                                         console.log(`Playing ${data.join(" ").replace(/[^\w\s]/gi, '')}`);
