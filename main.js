@@ -1329,7 +1329,7 @@ data.shift()
                         file.on('finish', function () {
                            console.log('Flag Downloading!')                     
                                var message = {
-                              body:`COVID UPDATE\n\nCountry: ${response.data.country}\n`  + `Continents: ${continent}n` +  `Population: ${population}\n` + `Cases: ${cases}\n` + `Died: ${death}\n` + `Recovered: ${recovered}\n` + `Critical: ${critical}\n` + `Tests: ${tests}\n` + `Active: ${active}\n` + `Today Deaths: ${todayD}\n` + `Today Recovered: ${todayR}\n` + `Today Cases: ${todayC}\n\n` + `${DateAndTime}\n`, 
+                              body:`COVID UPDATE\n\nCountry: ${response.data.country}\n`  + `Continents: ${continent}\n` +  `Population: ${population}\n` + `Cases: ${cases}\n` + `Died: ${death}\n` + `Recovered: ${recovered}\n` + `Critical: ${critical}\n` + `Tests: ${tests}\n` + `Active: ${active}\n` + `Today Deaths: ${todayD}\n` + `Today Recovered: ${todayR}\n` + `Today Cases: ${todayC}\n\n` + `${DateAndTime}\n`, 
                               attachment: fs.createReadStream(__dirname + '/test.png')
                            }
                            api.sendMessage(message, event.threadID, event.messageID);
