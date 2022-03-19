@@ -2860,28 +2860,23 @@ else if (input.startsWith(prefix + "translate")) {
                                 
                                 console.log(response);
 
-                                api.sendMessage(" 🔄Translating... \n\n"+ '"' +`${translation.source_text}`+'"\n' + "      ⇩⇩⇩ \n" + '"' +`${translation.target_language}` + '"\n',event.threadID)
+           api.sendMessage(" 🔄Translating... \n\n"+ `"${translation.source_text}"`,event.threadID, event.messageID)
                                 
                                 if(translation === undefined || Object.entries(translation).length === 0){
                                     throw new Error(`Failed to translate the phrase:\n '${from}'\n\n to: '${to}'.`, event.threadID, event.messageID)
                                 }
-                                let msg = `🔰Google Translate Result🔰\n\n`;
+                                let msg = `Google Translate Result\n\n`;
                                 msg += `➮ From: ${translation.source_language.split(" ")[0]}:\n\n`;
                                 msg += `"${translation.source_text}"\n\n`;
 	                            msg += `➮ To: ${translation.target_language}:\n\n`;
 	                            msg += `"${translation.target_text}"\n\n`;
-	                            msg += `©: Google Translate API\n`;
-                                msg += `©: @John Roy`;
-                                api.getUserID("John Roy Lapida Calimlim", (err,data) =>{
+	                            
+                            //(err,data) =>{
                                 let msgbody = {
-                                    body: msg,
-                                    mentions: [{
-                                    tag: "@John Roy",
-                                    id: data[0].userID
-                                       }]
+    body: msg,                                
                                     };
                                 api.sendMessage(msgbody, event.threadID,event.messageID)
-                            })
+                            
                         }
                             catch (err) {
                                 api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
