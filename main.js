@@ -9,11 +9,6 @@ const sharp = require("sharp");
 const request = require("node-superfetch");(async () => {
   //...
 })()
-//const DIG = require("discord-image-generation");
-//const Discord = require('discord.js');
-// const request = ("request");
-
-
 const fs = require('fs-extra');
 const { keep_alive } = require("./keep_alive.js");
 const http = require('https'); // or 'https' for https:// URLs
@@ -23,7 +18,7 @@ const login = require("helyt");
 //const login = require("fca-horizon-remake");
 const axios = require("axios");
 const YoutubeMusicApi = require('youtube-music-api')
-const ytdl = require('ytdl-core');
+const ytdl = require('@distube/ytdl-core');
 const ffmpeg = require('@ffmpeg-installer/ffmpeg');
 const ffmpegs = require('fluent-ffmpeg');
 ffmpegs.setFfmpegPath(ffmpeg.path);
@@ -2735,7 +2730,7 @@ else if(input.startsWith(prefix + "test")){
                             }
                                 else {
                         //    }
-                            api.sendMessage("🔎Searching...", event.threadID, event.messageID);
+                            api.sendMessage("🔎Searching: " + name, event.threadID, event.messageID);
                             try {
                                 data.shift();
                                 await musicApi.initalize();
@@ -2787,80 +2782,63 @@ else if(input.startsWith(prefix + "test")){
 }                           
                         
                         
-                        else if (input.startsWith(prefix + "video")) {
-       	var name = input;
-                    name = name.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()).substring(5);
-                    
-                        
-                        let data = input.split(" ");
-             
-           //              if (data.length < 2) {
-                                                             
-                            if (!(vip.includes(event.senderID))) {
-                                             api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
-                            
- 
-                                  
-     
-                            }else if (data.length < 2){
-                                                           api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: " + prefix + "video<space>music_title", event.threadID);                 
-                                  //  cd[event.senderID] = Math.floor(Date.now() / 1000) + (60 * 3);
-                               
-                            }
-                                else {
-                        //    }
-                            api.sendMessage("🔎Searching...", event.threadID, event.messageID);
-                            try {
-                                data.shift();
-                                await musicApi.initalize();
-                                const musics = await musicApi.search(data.join(" ").replace(/[^\w\s]/gi, ''));
-                                if (musics.content.length == 0) {
-                                    throw new Error(`${data.join(" ").replace(/[^\w\s]/gi, '')} returned no result!`)
-                                } else {
-                                    if (musics.content[0].videoId === undefined) {
-                                        throw new Error(`${data.join(" ").replace(/[^\w\s]/gi, '')} is not found on youtube music`)
-                                    }
+                        if (event.body != null){
+                    let input = event.body;
+                if (input.startsWith(prefix+"video")) {
+                    var name = input;
+                    name = name.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()).substring(7);
+                    let data = input.split(" ");
+                    if (data.length < 2) {
+                        api.sendMessage("⚠️Invalid Use of Command!\n💡Usage: "+prefix+"video<space>video_title", event.threadID);
+                    } else {
+                        console.log("🔎Searching..."  + name )
+               api.sendMessage("🔎Searching: " + name, event.threadID,event.messageID);      
+    try {
+                            data.shift();
+                            await musicApi.initalize();
+                            const musics = await musicApi.search(data.join(" ").replace(/[^\w\s]/gi, ''));
+                            if (musics.content.length == 0) {
+                                throw new Error(`${data.join(" ").replace(/[^\w\s]/gi, '')} returned no result!`)
+                            } else {
+                                if (musics.content[0].videoId === undefined) {
+                                    throw new Error(`${data.join(" ").replace(/[^\w\s]/gi, '')} is not found on youtube music`)
                                 }
-                                const url = `https://www.youtube.com/watch?v=${musics.content[0].videoId}`;
-                                console.log(`connecting to yt`);
-                                const strm = ytdl(url, {
-                                    quality: "lowest"
-                                });
-                                const info = await ytdl.getInfo(url);
-                                console.log(`converting`);
-                                api.sendMessage(`🔄Converting “${info.videoDetails.title}”`, event.threadID,event.messageID)
-                              axios.get('https://hermes-music.jersoncarin.dev/search?q=' + name)
-                                   .then(response => {
-                       
-                                ffmpegs(strm)
-                                    .audioBitrate(128)
-                                    .save(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
-                                    .on("end", () => {
-                                        console.log(`Playing ${data.join(" ").replace(/[^\w\s]/gi, '')}`);
-                                        api.sendMessage({
-                                            body: "😚Here's what ya ordered senpai!\n🎶Song Title: " + info.videoDetails.title + "" + "\n\n" + response.data.lyrics + "\n\n🎉Made by: John Paul Caigas\n🔏Credits to: Salvador",
-                                            attachment: fs.createReadStream(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
-                                                .on("end", async () => {
-                                                    if (fs.existsSync(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)) {
-                                                        fs.unlink(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`, function (err) {
-                                                            if (err) console.log(err);
-                                                            console.log(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4 is deleted!`);
-                                                        });
-                                                    }
-                                                })
-                                        }, event.threadID, event.messageID);
-                                        })
-                                    });
-
-                            } catch (err) {
-                                api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
                             }
-       }
-                            
+                            const url = `https://www.youtube.com/watch?v=${musics.content[0].videoId}`;
+                        console.log(`connecting to YouTube ` + url);
+                            const strm = ytdl(url, {
+                                quality: "highest"
+                            });
+                            const info = await ytdl.getInfo(url);
+                            console.log(`converting ` + info.videoDetails.title);   
+                                                    api.sendMessage(`🔄Converting “${info.videoDetails.title}”`, event.threadID,event.messageID)  
+                            ffmpegs(strm)
+                                .audioBitrate(96)
+                                .save(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
+                                .on("end", () => {
+                                    console.log(`Playing ${data.join(" ").replace(/[^\w\s]/gi, '')}`);
+                                    console.log('➢Sending...\n ' + info.videoDetails.title, event.threadID);
+                                    api.sendMessage({
+                                            body: "Here's what ya ordered senpai!\nSong Title: " + info.videoDetails.title +  "\n\nMade by: John Paul Caigas\n",
+                                             attachment: fs.createReadStream(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
+                                            .on("end", async () => {
+                                                if (fs.existsSync(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)) {
+                                                    fs.unlink(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`, function (err) {
+                                                        if (err) console.log(err);
+                                                        console.log(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4 is deleted!`);
+                                                    });
+                                                };
+                                            })
+                                    }, event.threadID, event.messageID);
+                                });
 
-}                           
-                        
-                      
+                        }
+                        catch (err) {
+                            api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
+                            };
+                        };
+                    };
+                }                      
 
        /*==================================== GOOGLE TRANSLATE COMMAND ============================================*/
 //Credits To: Javanny De Leon, John Roy Lapida       
