@@ -2782,9 +2782,8 @@ else if(input.startsWith(prefix + "test")){
 }                           
                         
                         
-                        if (event.body != null){
-                    let input = event.body;
-                if (input.startsWith(prefix+"video")) {
+     
+               else if (input.startsWith(prefix+"video")) {
                     var name = input;
                     name = name.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()).substring(7);
                     let data = input.split(" ");
@@ -2835,10 +2834,10 @@ else if(input.startsWith(prefix + "test")){
                         }
                         catch (err) {
                             api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
-                            };
-                        };
-                    };
-                }                      
+                            }
+                        }
+                    }
+                                    
 
        /*==================================== GOOGLE TRANSLATE COMMAND ============================================*/
 //Credits To: Javanny De Leon, John Roy Lapida       
