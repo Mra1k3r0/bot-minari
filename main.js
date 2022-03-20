@@ -818,7 +818,7 @@ api.sendMessage(message, event.threadID, event.messageID);
             if (data[0] == "page2") {
 	//try {
 	var page2 = data[1];
-  if (!page2) return api.sendMessage("🎉COMMANDS LIST PAGE 2🎉\n-----------------------------------------------\n\n🏷️" + prefix + "ip<space>ip_adress\n~Find information of any IP address\n\n🏷️" + prefix + "lyric<space> song_tittle\n~This command generates the lyrics of the song\n\n🏷️" + prefix +"setname<space>nickname<tag/mention user>\n~Command for changing your nickname\n\n🏷️" + prefix + "setemoji<space>emoji\n~Command for changing emoji from your GC\n\n🏷️" + prefix + "changeimage\n~Command for changing GC profiles\n\n🏷️" + prefix + "groupname<space>name\n~Change groups name\n\n🏷️" + prefix + "kick<space>tag user\n~This command are for kicking members out of GC, it'll only work if the bot are admin\n\n🏷️" + prefix + "trump<space>text/word/phrase\n~Generates Image of trump on twitter post\n\n🏷️" + prefix + "drake<space>Text|Text\n~Generates Drake Meme with text\n\n🏷️" + prefix + "zuck<space>text/word/phrase\n~Generates Image Text with Mark Zuckerberg\n\n🏷️"+ prefix + "simpson<space>text/word/phrase\n~It well send simpson image with text \n\n🏷️" + prefix + "tif<space>text/word/phrase\n~Generates Image Text\n\n🏷️" + prefix + "ping\n~Pings Everyone on Your GC\n\n🏷️" + prefix + "setall<space>name\n~Set all group members nicknames\n\n🏷️" + prefix + "groups\n~Lists of group chats manage by this bot\n\n🏷️" + prefix + "trigger\n~Image generator with Triggered\n\n🏷️" + prefix + "covid<space>country\n~Daily Updates about covid\n\n🏷️" + prefix + `others\n~This command are for others nothing special to it\n\nPage (2/2)\n\n💉Execute "` + prefix + `help" if you want to go back from the first page!\n\nMade by: John Paul Caigas`,event.threadID,event.messageID);
+  if (!page2) return api.sendMessage("🎉COMMANDS LIST PAGE 2🎉\n-----------------------------------------------\n\n🏷️" + prefix + "ip<space>ip_adress\n~Find information of any IP address\n\n🏷️" + prefix + "lyric<space> song_tittle\n~This command generates the lyrics of the song\n\n🏷️" + prefix +"setname<space>nickname<tag/mention user>\n~Command for changing your nickname\n\n🏷️" + prefix + "setemoji<space>emoji\n~Command for changing emoji from your GC\n\n🏷️" + prefix + "changeimage\n~Command for changing GC profiles\n\n🏷️" + prefix + "groupname<space>name\n~Change groups name\n\n🏷️" + prefix + "kick<space>tag user\n~This command are for kicking members out of GC, it'll only work if the bot are admin\n\n🏷️" + prefix + "trump<space>text/word/phrase\n~Generates Image of trump on twitter post\n\n🏷️" + prefix + "drake<space>Text|Text\n~Generates Drake Meme with text\n\n🏷️" + prefix + "zuck<space>text/word/phrase\n~Generates Image Text with Mark Zuckerberg\n\n🏷️"+ prefix + "simpson<space>text/word/phrase\n~It well send simpson image with text \n\n🏷️" + prefix + "tif<space>text/word/phrase\n~Generates Image Text\n\n🏷️" + prefix + "ping\n~Pings Everyone on Your GC\n\n🏷️" + prefix + "setall<space>name\n~Set all group members nicknames\n\n🏷️" + prefix + "groups\n~Lists of group chats manage by this bot\n\n🏷️" + prefix + "trigger\n~Image generator with Triggered\n\n🏷️" + prefix + "covid<space>country\n~Daily Updates about covid\n\n🏷️" + prefix "phub\n~Genrates Image edit commenting on p*hub\n\n🏷️ " + prefix + `others\n~This command are for others nothing special to it\n\nPage (2/2)\n\n💉Execute "` + prefix + `help" if you want to go back from the first page!\n\nMade by: John Paul Caigas`,event.threadID,event.messageID);
     
   //  }
 
@@ -1122,6 +1122,51 @@ if(!fs.existsSync(__dirname+'/SVN-Arial 2.ttf')) {
     messageID
   );
 }
+
+
+else if ((input.startsWith(prefix + "phub")) && !bot.includes(event.senderID)){
+	let data = input.split(" ");
+ data.shift()
+let { senderID, threadID, messageID } = event;
+	const { loadImage, createCanvas } = require("canvas");
+	
+	let avatar = __dirname + '/avt.png';
+	let pathImg = __dirname + '/porn.png';
+	var text = data.join(" ");
+	let name = (await api.getUserInfo(senderID))[senderID].name
+	var linkAvatar = (await api.getUserInfo(senderID))[senderID].thumbSrc;
+	if (!text) return api.sendMessage("Enter the content of the comment on p*rnhub", threadID, messageID);
+	let getAvatar = (await axios.get(linkAvatar, { responseType: 'arraybuffer' })).data;
+	let getPorn = (await axios.get(`https://i.imgur.com/XrgnIyK.png`, { responseType: 'arraybuffer' })).data;
+	fs.writeFileSync(avatar, Buffer.from(getAvatar, 'utf-8'));
+	fs.writeFileSync(pathImg, Buffer.from(getPorn, 'utf-8'));
+	let image = await loadImage(avatar);
+	let baseImage = await loadImage(pathImg);
+	let canvas = createCanvas(baseImage.width, baseImage.height);
+	let ctx = canvas.getContext("2d");
+	ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+	ctx.drawImage(image, 30, 310, 70, 70);
+	ctx.font = "700 23px Arial";
+	ctx.fillStyle = "#FF9900";
+	ctx.textAlign = "start";
+	ctx.fillText(name, 115, 350);
+	ctx.font = "400 23px Arial";
+	ctx.fillStyle = "#ffff";
+	ctx.textAlign = "start";
+	let fontSize = 23;
+	while (ctx.measureText(text).width > 2600) {
+		fontSize--;
+		ctx.font = `400 ${fontSize}px Arial, sans-serif`;
+	}
+	const lines = await saikiiWrap(ctx, text, 1160);
+	ctx.fillText(lines.join('\n'), 30,430);
+	ctx.beginPath();
+	const imageBuffer = canvas.toBuffer();
+	fs.writeFileSync(pathImg, imageBuffer);
+	fs.removeSync(avatar);
+	return api.sendMessage({ attachment: fs.createReadStream(pathImg) }, threadID, () => fs.unlinkSync(pathImg), messageID);        
+}
+
 
 else if ((input.startsWith(prefix + "simpson")) && !bot.includes(event.senderID)){
     
