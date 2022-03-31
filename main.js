@@ -262,6 +262,84 @@ let datas = input.split(" ");
 
 }
 
+/*==================================== IMAGESEARCH COMMANDS & API ============================================*/
+if ((input.startsWith(prefix + "imagesearch")) && !bot.includes(event.senderID)){
+	//const { type, messageReply } = event;
+    const axios = require('axios');
+    const google = require("googlethis");
+const cloudscraper = require("cloudscraper");
+const fs = require("fs");
+let data = input.split(" ")
+                data.shift()
+//if (data.length < 2) {
+var query = (event.type == "message_reply") ? event.messageReply.body : data.join(" ");
+ // let query = data.join(" ");
+  let Replaced = query.replace(/ /g, " ");
+  api.sendMessage(`🔎 Searching for ${Replaced}...`, event.threadID, event.messageID);
+  let result = await google.image(Replaced, {safe: false});
+  if(result.length === 0) {
+    api.sendMessage(`⚠️ Your image search did not return any result.`, event.threadID, event.messageID)
+    return;
+  }
+  
+  let streams = [];
+  let counter = 0;
+  
+  console.log(result)
+  
+  for(let image of result) {
+    // Only show 6 images
+    if(counter >= 6)
+      break;
+      
+    console.log(`${counter}: ${image.url}`);
+    
+    // Ignore urls that does not ends with .jpg or .png
+    let url = image.url;
+    if(!url.endsWith(".jpg") && !url.endsWith(".png"))
+      continue;
+    
+   let path = __dirname + `/search-image-${counter}.jpg`;
+    let hasError = false;
+    await cloudscraper.get({uri: url, encoding: null})
+      .then((buffer) => fs.writeFileSync(path, buffer))
+      .catch((error) => {
+        console.log(error)
+        hasError = true;
+      });
+      
+    if(hasError)
+      continue;
+    
+    console.log(`Pushed to streams: ${path}`) ;
+    streams.push(fs.createReadStream(path).on("end", async () => {
+      if(fs.existsSync(path)) {
+        fs.unlink(path, (err) => {
+          if(err) return console.log(err);
+            
+          console.log(`Deleted file: ${path}`);
+        });
+      }
+    }));
+    
+    counter += 1;
+  }
+  
+  api.sendMessage("⏳ Sending search result...", event.threadID, event.messageID)
+  
+  let msg = {
+    body: `--------------------\nImage Search Result\n"${Replaced}"\n\nFound: ${result.length} image${result.length > 1 ? 's' : ''}\nOnly showing: 6 images\n\n--------------------`,
+    attachment: streams
+  };
+  
+  api.sendMessage(msg, event.threadID, event.messageID);
+//}
+}
+
+
+
+  
+
           /*==================================== SIMSIMI COMMANDS & API ============================================*/
 //Credits To: Javanny De Leon                 
        else if (input.startsWith("minari")) {
@@ -818,7 +896,7 @@ api.sendMessage(message, event.threadID, event.messageID);
             if (data[0] == "page2") {
 	//try {
 	var page2 = data[1];
-  if (!page2) return api.sendMessage("🎉COMMANDS LIST PAGE 2🎉\n-----------------------------------------------\n\n🏷️" + prefix + "ip<space>ip_adress\n~Find information of any IP address\n\n🏷️" + prefix + "lyric<space> song_tittle\n~This command generates the lyrics of the song\n\n🏷️" + prefix +"setname<space>nickname<tag/mention user>\n~Command for changing your nickname\n\n🏷️" + prefix + "setemoji<space>emoji\n~Command for changing emoji from your GC\n\n🏷️" + prefix + "changeimage\n~Command for changing GC profiles\n\n🏷️" + prefix + "groupname<space>name\n~Change groups name\n\n🏷️" + prefix + "kick<space>tag user\n~This command are for kicking members out of GC, it'll only work if the bot are admin\n\n🏷️" + prefix + "trump<space>text/word/phrase\n~Generates Image of trump on twitter post\n\n🏷️" + prefix + "drake<space>Text|Text\n~Generates Drake Meme with text\n\n🏷️" + prefix + "zuck<space>text/word/phrase\n~Generates Image Text with Mark Zuckerberg\n\n🏷️"+ prefix + "simpson<space>text/word/phrase\n~It well send simpson image with text \n\n🏷️" + prefix + "tif<space>text/word/phrase\n~Generates Image Text\n\n🏷️" + prefix + "ping\n~Pings Everyone on Your GC\n\n🏷️" + prefix + "setall<space>name\n~Set all group members nicknames\n\n🏷️" + prefix + "groups\n~Lists of group chats manage by this bot\n\n🏷️" + prefix + "trigger\n~Image generator with Triggered\n\n🏷️" + prefix + "covid<space>country\n~Daily Updates about covid\n\n🏷️" + prefix + "phub\n~Genrates Image edit commenting on p*hub\n\n🏷️ " + prefix + `others\n~This command are for others nothing special to it\n\nPage (2/2)\n\n💉Execute "` + prefix + `help" if you want to go back from the first page!\n\nMade by: John Paul Caigas`,event.threadID,event.messageID);
+  if (!page2) return api.sendMessage("🎉COMMANDS LIST PAGE 2🎉\n-----------------------------------------------\n\n🏷️" + prefix + "ip<space>ip_adress\n~Find information of any IP address\n\n🏷️" + prefix + "lyrics<space> song_tittle\n~This command generates the lyrics of the song\n\n🏷️" + prefix +"setname<space>nickname<tag/mention user>\n~Command for changing your nickname\n\n🏷️" + prefix + "setemoji<space>emoji\n~Command for changing emoji from your GC\n\n🏷️" + prefix + "changeimage\n~Command for changing GC profiles\n\n🏷️" + prefix + "groupname<space>name\n~Change groups name\n\n🏷️" + prefix + "kick<space>tag user\n~This command are for kicking members out of GC, it'll only work if the bot are admin\n\n🏷️" + prefix + "trump<space>text/word/phrase\n~Generates Image of trump on twitter post\n\n🏷️" + prefix + "drake<space>Text|Text\n~Generates Drake Meme with text\n\n🏷️" + prefix + "zuck<space>text/word/phrase\n~Generates Image Text with Mark Zuckerberg\n\n🏷️"+ prefix + "simpson<space>text/word/phrase\n~It well send simpson image with text \n\n🏷️" + prefix + "tif<space>text/word/phrase\n~Generates Image Text\n\n🏷️" + prefix + "ping\n~Pings Everyone on Your GC\n\n🏷️" + prefix + "setall<space>name\n~Set all group members nicknames\n\n🏷️" + prefix + "groups\n~Lists of group chats manage by this bot\n\n🏷️" + prefix + "trigger\n~Image generator with Triggered\n\n🏷️" + prefix + "covid<space>country\n~Daily Updates about covid\n\n🏷️" + prefix + "phub\n~Genrates Image edit commenting on p*hub\n\n🏷️" + prefix + "mal\n~Search your favorite anime from myanimelist\n\n🏷️" + prefix + "imagesearch\n~Search image from Google\n\n🏷️" + prefix + `others\n~This command are for others nothing special to it\n\nPage (2/2)\n\n💉Execute "` + prefix + `help" if you want to go back from the first page!\n\nMade by: John Paul Caigas`,event.threadID,event.messageID);
     
   //  }
 
@@ -1236,7 +1314,7 @@ return api.sendMessage({ attachment: fs.createReadStream(pathImg) }, threadID, (
         }                          
      
                             
-    if (input.startsWith(prefix + "lyric")) {
+    if (input.startsWith(prefix + "lyrics")) {
             let data = input.split(" ");
         //    if (data.length < 2) {
                 //api.sendMessage("⚠️Invalid Use Of  Command!\n💡Usage: minari<space>say_something", event.threadID);
@@ -1244,18 +1322,18 @@ return api.sendMessage({ attachment: fs.createReadStream(pathImg) }, threadID, (
          //       try {                                
 data.shift()
     let title = data.join(" ");       axios.get('https://hermes-music.jersoncarin.dev/search?q=' + title)
-                  .then(response => {
-              //    	var mention =  bject.keys(event.mentions)[0];
-
+                  .then(res => {
+ var lyrics = res.data.lyrics;
+var name = res.data.title;
+var link = res.data.link;
+var artist = res.data.artist;
                            var message = {
-                              body: "" + response.data.lyrics + "", 
+                              body: `Title: ${name}\nArtist: ${artist}\n\nLyrics:\n${lyrics}\n\nLink: ${link}`, 
         
-                              //attachment: fs.createReadStream(__dirname + '/memes.png')
-                           }
+                     }
                            api.sendMessage(message, event.threadID, event.messageID);
                            api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        //});
-             //        });
+                        
                   })
                   .catch(error => {
                      api.sendMessage("Can't find Lyrics!", event.threadID, event.messageID);
@@ -2436,7 +2514,138 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
                   })                      
                         }      
-                        
+                                           if ((input.startsWith(prefix + "mal")) && !bot.includes(event.senderID)){
+                     
+	const axios = require("axios");
+    const Scraper = require('mal-scraper');
+	const request = require('request');
+	const fs = require("fs");
+	let data = input.split(" ");
+let query = data.join("");
+    let Replaced = query.replace(/ /g, " ");
+const Anime = await Scraper.getInfoFromName(Replaced)
+ .catch(err => {
+                     api.sendMessage("⚠️" + err, event.threadID, event.messageID);
+           }); 
+    
+   console.log(`\n${Anime.title}, \n${Anime.genres}, \n${Anime.synopsis}`)                
+    let getURL = Anime.picture;
+
+    let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+    
+       if (!Anime.genres[0] || Anime.genres[0] === null) Anime.genres[0] = "None";
+
+    var title = Anime.title;
+var japTitle = Anime.japaneseTitle
+var type = Anime.type;
+var episodes = Anime.episodes;
+var status = Anime.status;
+var premiered = Anime.premiered;
+var broadcast = Anime.broadcast;
+var aired = Anime.aired;
+var producers = Anime.producers;
+var studios = Anime.studios;
+var source = Anime.source;
+var duration = Anime.duration;
+var genres = Anime.genres.join(", ");    
+var popularity = Anime.popularity;
+var ranked = Anime.ranked;
+var score = Anime.score;    
+var rating = Anime.rating;
+var synopsis = Anime.synopsis;
+var url = Anime.url;  
+var endD = Anime.end_date;
+
+    
+        let callback = function () {           
+ api.sendMessage({
+     body:`Title: ${title}\nJapanese: ${japTitle}\nType: ${type}\nEpisodes: ${episodes}\nStatus: ${status}\nPremiered: ${premiered}\nBroadcast: ${broadcast}\nAired: ${aired}\nProducers: ${producers}\nStudios: ${studios}\nSource: ${source}\nDuration: ${duration}\nGenres: ${genres}\nPopularity: ${popularity}\nRanked: ${ranked}\nScore: ${score}\nRating: ${rating}\n\nSynopsis: \n${synopsis}\nLink: ${url}`, 
+					attachment: fs.createReadStream(__dirname + `/mal.${ext}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/mal.${ext}`), event.messageID)
+				}
+    
+ //   }
+        request(getURL).pipe(fs.createWriteStream(__dirname + `/mal.${ext}`)).on("close", callback)           
+}		
+
+
+
+if ((input.startsWith(prefix + "imagesearch")) && !bot.includes(event.senderID)){
+	//const { type, messageReply } = event;
+    const axios = require('axios');
+    const google = require("googlethis");
+const cloudscraper = require("cloudscraper");
+const fs = require("fs");
+let data = input.split(" ")
+               data.shift()
+//if (data.length < 2) {
+var query = (event.type == "message_reply") ? event.messageReply.body : data.join(" ");
+ // let query = data.join(" ");
+  let Replaced = query.replace(/ /g, " ");
+api.sendMessage(`🔎 Searching for ${Replaced}...`, event.threadID, event.messageID);
+  let result = await google.image(Replaced, {safe: false});
+  if(result.length === 0) {
+    api.sendMessage(`⚠️ Your image search did not return any result.`, event.threadID, event.messageID)
+    return;
+  }
+  
+  let streams = [];
+  let counter = 0;
+  
+  console.log(result)
+  
+  for(let image of result) {
+    // Only show 6 images
+    if(counter >= 6)
+      break;
+      
+    console.log(`${counter}: ${image.url}`);
+    
+    // Ignore urls that does not ends with .jpg or .png
+    let url = image.url;
+    if(!url.endsWith(".jpg") && !url.endsWith(".png"))
+      continue;
+    
+   let path = __dirname + `/search-image-${counter}.jpg`;
+    let hasError = false;
+    await cloudscraper.get({uri: url, encoding: null})
+      .then((buffer) => fs.writeFileSync(path, buffer))
+      .catch((error) => {
+        console.log(error)
+        hasError = true;
+      });
+      
+    if(hasError)
+      continue;
+    
+    console.log(`Pushed to streams: ${path}`) ;
+    streams.push(fs.createReadStream(path).on("end", async () => {
+      if(fs.existsSync(path)) {
+        fs.unlink(path, (err) => {
+          if(err) return console.log(err);
+            
+          console.log(`Deleted file: ${path}`);
+        });
+      }
+    }));
+    
+    counter += 1;
+  }
+  
+  api.sendMessage("⏳ Sending search result...", event.threadID, event.messageID)
+  
+  let msg = {
+    body: `--------------------\nImage Search Result\n"${Replaced}"\n\nFound: ${result.length} image${result.length > 1 ? 's' : ''}\nOnly showing: 6 images\n\n--------------------`,
+    attachment: streams
+  };
+  
+  api.sendMessage(msg, event.threadID, event.messageID);
+}
+
+
+
+
+  
                             
                          if((input2.includes("vivi") || 
 input2.includes("bot"))&& !bot.includes(event.senderID)){
