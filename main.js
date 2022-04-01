@@ -6,9 +6,7 @@
 const timerestart = 120   //in minutes
 const google = require('googlethis');
 const sharp = require("sharp");
-const request = require("node-superfetch");(async () => {
-  //...
-})()
+const request = require("request");
 const fs = require('fs-extra');
 const { keep_alive } = require("./keep_alive.js");
 const http = require('https'); // or 'https' for https:// URLs
@@ -1688,6 +1686,7 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+         api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -1728,6 +1727,7 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd01[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd01[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd01[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+             api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -1736,34 +1736,35 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
                             }
                           
                      
-          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/pat')
+          axios.get('https://saikiapi-v2-production.up.railway.app/pat')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("pat.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `pat.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body: "Pats, " + tag + ". Goodgirl!!☺️",
-                              
-                              mentions: [{
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/pat.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }        
+                  })     
+}
+      
                         
                         else if ((input.startsWith(prefix + "slap")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
@@ -1772,6 +1773,7 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+                api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -1780,35 +1782,36 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
                             }
                           
           
-          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/slap')
+          axios.get('https://saikiapi-v2-production.up.railway.app/slap')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("slap.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+                      var file = `slap.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+                  let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body: "Slapped! " + tag + "\n\n*Sorry I thought there's a mosquito*",
                               
-                              mentions: [{
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/slap.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/slap.${ext}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/slap.${ext}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/slap.${ext}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }      
-
+                  })     
+}
+      
 else if ((input.startsWith(prefix + "hug")) && !bot.includes(event.senderID)){
          if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd03)) {
@@ -1816,6 +1819,7 @@ else if ((input.startsWith(prefix + "hug")) && !bot.includes(event.senderID)){
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd03[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd03[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd03[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+           api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -1824,34 +1828,36 @@ else if ((input.startsWith(prefix + "hug")) && !bot.includes(event.senderID)){
                             }
                           
                                  
-          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/hug')
+          axios.get('https://saikiapi-v2-production.up.railway.app/hug')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("hug.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+    	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `hug.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body: "hugs you tight " + tag + "☺️\n\nsometimes all you need is a hug~",
-                              
-                              mentions: [{
+                                
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/hug.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                         });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }     
+                  })     
+}
+      
 else if ((input.startsWith(prefix + "kiss")) && !bot.includes(event.senderID)){
            if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd04)) {
@@ -1859,6 +1865,7 @@ else if ((input.startsWith(prefix + "kiss")) && !bot.includes(event.senderID)){
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd04[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd04[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd04[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+          api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -1867,35 +1874,36 @@ else if ((input.startsWith(prefix + "kiss")) && !bot.includes(event.senderID)){
                             }
                           
                                
-          axios.get('https://RandomLinkAPI-1.ekekevan.repl.co/getlink5')
+          axios.get('https://saikiapi-v2-production.up.railway.app/getlink5')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("kiss.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `kiss.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body:  tag + ", I love you very much!❤️",
-                              
-                              mentions: [{
+                                
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/kiss.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }        
-
+                  })     
+}
+      
 else if ((input.startsWith(prefix + "haist")) && !bot.includes(event.senderID)){
                                 if (!vip.includes(event.senderID)){
                           api.sendMessage(`⚠️YOU DON'T HAVE PERMISSION TO USE THIS COMMAND!`, event.threadID, event.messageID);
@@ -2278,6 +2286,7 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+       api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -2286,32 +2295,33 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                             }                                    
           axios.get('https://api.satou-chan.xyz/api/endpoint/poke')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("poke.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `poke.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body: "Poke " + tag + "\n\nYou're so cute!",
-                              
-                              mentions: [{
+                                
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/poke.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }      
+                  })     
+}
                       else if ((input.startsWith(prefix + "punch")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd02)) {
@@ -2319,6 +2329,7 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+           api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -2327,32 +2338,34 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                             }                                    
           axios.get('https://api.satou-chan.xyz/api/endpoint/punch')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("anime.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `punch.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body: "Punched " + tag,
                               
-                              mentions: [{
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/anime.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }      
+                  })     
+}
+      
                         if ((input.startsWith(prefix + "tickle")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd02)) {
@@ -2360,6 +2373,7 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+         api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -2368,33 +2382,34 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                             }                                    
           axios.get('https://api.satou-chan.xyz/api/endpoint/tickle')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("anime.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `tickle.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
                               body: "Tickled " + tag,
-                              
-                              mentions: [{
+                                
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/anime.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }      
-                        
+                  })     
+}
+      
                         else if ((input.startsWith(prefix + "spank")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd02)) {
@@ -2402,6 +2417,7 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
                                     api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+                api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
@@ -2410,33 +2426,34 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                             }                                    
           axios.get('https://api.satou-chan.xyz/api/endpoint/spank')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("anime.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
-                              body: "Spank! " + tag ,
-                              
-                              mentions: [{
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `spank.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
+                              body: "Spank! " + tag,
+                                
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/anime.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }      
-                        
+                  })     
+}
+      
                         if ((input.startsWith(prefix + "animage")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd02)) {
@@ -2488,32 +2505,33 @@ if ((input.startsWith(prefix + "poke")) && !bot.includes(event.senderID)){
                             }                                    
           axios.get('https://api.satou-chan.xyz/api/endpoint/bite')
                   .then(response => {
-                  	var mention = Object.keys(event.mentions)[0];
-                  let tag = event.mentions[mention].replace("@", "");
-                     var file = fs.createWriteStream("anime.gif");
-                     var targetUrl = response.data.url;
-                     var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log('GIF Downloading!')
-                           var message = {
-                              body: "Bites " + tag ,
-                              
-                              mentions: [{
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `bite.${ext}`;
+        var mention = Object.keys(event.mentions)[0];
+        let tag = event.mentions[mention].replace("@", "");    
+        
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+        api.sendMessage({
+                              body: "Bites " + tag ,                       
+                                          mentions: [{
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-                              attachment: fs.createReadStream(__dirname + '/anime.gif')
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                     });
-                  })
-                  .catch(error => {
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
-                  })                      
-                        }      
+                  })     
+}
+        
                                            if ((input.startsWith(prefix + "mal")) && !bot.includes(event.senderID)){
                      
 	const axios = require("axios");
@@ -3204,6 +3222,7 @@ api.sendMessage(response.data['success'], event.threadID, event.messageID);
                                 }
                                 else if (Math.floor(Date.now() / 1000) < cd[event.senderID]) {
                                     api.sendMessage("Opps you're going to fast! Wait for " + Math.floor((cd[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+          api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
                                     return
                                 }
                                 else {
