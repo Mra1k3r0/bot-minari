@@ -2453,6 +2453,78 @@ console.log(`${file} has been deleted!`)
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
                   })     
 }
+
+else if ((input.startsWith(prefix + "gura")) && !bot.includes(event.senderID)){
+                                if (!(vips.includes(event.senderID))) {
+                                if (!(event.senderID in cd02)) {
+                                    cd02[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
+                                }
+                                else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
+                                    api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+                api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
+                                    return
+                                }
+                                else {
+                                    cd02[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
+                                }
+                            }                                    
+          axios.get('https://saikiapi-v3-production.up.railway.app/holo/gura')
+                  .then(response => {
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `gura.${ext}`;
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+       api.sendMessage({
+                        body: `Name: ${response.data.name}\nAuthor: ${response.data.author}\nCredits: ${response.data.credits}`,
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
+                     api.sendMessage("Failed to load image", event.threadID, event.messageID);
+                  })     
+}
+      
+      else if ((input.startsWith(prefix + "gura")) && !bot.includes(event.senderID)){
+                                if (!(vips.includes(event.senderID))) {
+                                if (!(event.senderID in cd02)) {
+                                    cd02[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
+                                }
+                                else if (Math.floor(Date.now() / 1000) < cd02[event.senderID]) {
+                                    api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd02[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd02[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+                api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
+                                    return
+                                }
+                                else {
+                                    cd02[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
+                                }
+                            }                                    
+          axios.get('https://saikiapi-v3-production.up.railway.app/x/ero_yuri')
+                  .then(response => {
+                  	let getURL = response.data.url;
+        let ext = getURL.substring(getURL.lastIndexOf(".") + 1);
+        var file = `yuri.${ext}`;
+ let callback = function () {
+   console.log(`${file} is now downloading...`) 
+       api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+       api.sendMessage({
+                        body: `Title: ${response.data.name}\nAuthor: ${response.data.author}\nLink: ${response.data.url}`,
+						attachment: fs.createReadStream(__dirname + `/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+console.log(`${file} has been deleted!`) 
+				};
+ //   }
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+			})
+    .catch(err => {
+                     api.sendMessage("Failed to load image", event.threadID, event.messageID);
+                  })     
+}
       
                         if ((input.startsWith(prefix + "animage")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
