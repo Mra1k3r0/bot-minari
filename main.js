@@ -2490,7 +2490,7 @@ console.log(`${file} has been deleted!`)
                   })     
 }
       
-      else if ((input.startsWith(prefix + "gura")) && !bot.includes(event.senderID)){
+      else if ((input.startsWith(prefix + "yuriNsfw")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd02)) {
                                     cd02[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
