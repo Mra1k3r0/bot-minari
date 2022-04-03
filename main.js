@@ -3223,7 +3223,7 @@ var downloadTimer = setInterval(function(){
     loudnessDB: '20',
     audioBitrate: '320'
   });
-    stream.pipe(fs.createWriteStream(`./cache/video.mp4`));
+    stream.pipe(fs.createWriteStream(__dirname + `/video.mp4`));
  
   stream.on('start', () => {
     console.info('[DOWNLOADER]', 'Starting download now!');
@@ -3238,7 +3238,7 @@ var downloadTimer = setInterval(function(){
     var message = {
           body:("YT Video Downloader\n\n"+search.videos[0].title),
          attachment:[ 
-fs.createReadStream(__dirname + "/cache/video.mp4")]}
+fs.createReadStream(__dirname + "/video.mp4")]}
            api.sendMessage(message, event.threadID,event.messageID);
   }); stream.on('error', (err)=> console.error('[ERROR]',err));
 }
