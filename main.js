@@ -3128,61 +3128,7 @@ else if(input.startsWith(prefix + "test")){
                         
                         
      
-        /*       else if (input.startsWith(prefix+"video")) {
-                    var name = input;
-                    name = name.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()).substring(7);
-                    let data = input.split(" ");
-                    if (data.length < 2) {
-                        api.sendMessage("⚠️Invalid Use of Command!\n💡Usage: "+prefix+"video<space>video_title", event.threadID);
-                    } else {
-                        console.log("🔎Searching..."  + name )
-               api.sendMessage("🔎Searching: " + name, event.threadID,event.messageID);      
-    try {
-                            data.shift();
-                            await musicApi.initalize();
-                            const musics = await musicApi.search(data.join(" ").replace(/[^\w\s]/gi, ''));
-                            if (musics.content.length == 0) {
-                                throw new Error(`${data.join(" ").replace(/[^\w\s]/gi, '')} returned no result!`)
-                            } else {
-                                if (musics.content[0].videoId === undefined) {
-                                    throw new Error(`${data.join(" ").replace(/[^\w\s]/gi, '')} is not found on youtube music`)
-                                }
-                            }
-                            const url = `https://www.youtube.com/watch?v=${musics.content[0].videoId}`;
-                        console.log(`connecting to YouTube ` + url);
-                            const strm = ytdl(url, {
-                                quality: "highest"
-                            });
-                            const info = await ytdl.getInfo(url);
-                            console.log(`converting ` + info.videoDetails.title);   
-                                                    api.sendMessage(`🔄Converting “${info.videoDetails.title}”`, event.threadID,event.messageID)  
-                            ffmpegs(strm)
-                                .audioBitrate(96)
-                                .save(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
-                                .on("end", () => {
-                                    console.log(`Playing ${data.join(" ").replace(/[^\w\s]/gi, '')}`);
-                                    console.log('➢Sending...\n ' + info.videoDetails.title, event.threadID);
-                                    api.sendMessage({
-                                            body: "Here's what ya ordered senpai!\nSong Title: " + info.videoDetails.title +  "\n\nMade by: John Paul Caigas\n",
-                                             attachment: fs.createReadStream(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)
-                                            .on("end", async () => {
-                                                if (fs.existsSync(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`)) {
-                                                    fs.unlink(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4`, function (err) {
-                                                        if (err) console.log(err);
-                                                        console.log(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp4 is deleted!`);
-                                                    });
-                                                };
-                                            })
-                                    }, event.threadID, event.messageID);
-                                });
 
-                        }
-                        catch (err) {
-                            api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
-                            }
-                        }
-                    } */
-      
 else if (input.startsWith(prefix + "video")){
 var text = input;     
 text = text.substring(7)
@@ -3206,7 +3152,12 @@ data.shift()
   const youtube = await new Innertube();
  
   const search = await youtube.search(text);
-if (search.videos[0] === undefined){api.sendMessage("Error: Invalid request.",event.threadID,event.messageID);}else{api.sendMessage("Connecting to YouTube!", event.threadID,event.messageID);
+if (search.videos[0] === undefined){
+api.sendMessage("Error: Invalid request.",event.threadID,event.messageID)
+api.setMessageReaction("❎", event.messageID, (err) => {}, true)
+}else{
+api.sendMessage("Connecting to YouTube!", event.threadID,event.messageID);
+api.setMessageReaction("✅", event.messageID, (err) => {}, true)
 var timeleft = 3;
 var downloadTimer = setInterval(function(){
   if(timeleft <= 0){
@@ -3242,7 +3193,8 @@ var downloadTimer = setInterval(function(){
 fs.createReadStream(__dirname + "/video.mp4")]}
            api.sendMessage(message, event.threadID,event.messageID);
   }); 
-stream.on('error', (err)=> console.error('[ERROR]',err));
+stream.on('error', (err)=> console.error('[ERROR]',err))
+ 
 }
       } 
                     }                             
