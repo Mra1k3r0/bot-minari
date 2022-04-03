@@ -3224,8 +3224,8 @@ var downloadTimer = setInterval(function(){
     loudnessDB: '20',
     audioBitrate: '320'
   });
-    stream.pipe(fs.createWriteStream(`/video.mp4`));
- 
+    stream.pipe(fs.createWriteStream(`./${search.videos[0].title}.mp4`))
+
   stream.on('start', () => {
     console.info('[DOWNLOADER]', 'Starting download now!');
   }); 
