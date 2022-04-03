@@ -1464,57 +1464,7 @@ data.shift()
                       
                   })                      
            }                       }            
-                        
-                                    if (input.startsWith(prefix + "holo")) {
-       let data = input.split(" ");                                 if (data.length < 2) {
-                api.sendMessage("⚠️Invalid Use Of  Command!\n💡Usage: !holo<space>gura/marine/rushia/pekora/coco", event.threadID);
-            } else {
-
-if (!(vip.includes(event.senderID))) {
-                                if (!(event.senderID in cd)) {
-                                    cd[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
-                                }
-                                else if (Math.floor(Date.now() / 1000) < cd[event.senderID]) {
-                                    api.sendMessage("⚠️Opps you're going to fast! Wait for " + Math.floor((cd[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
-                                    return
-                                }
-                                else {
-                                    cd[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
-                                }
-}
-        
-data.shift()
-    let name = data.join(" ");
-    axios.get('https://img-hololive-api.up.railway.app/' + name)
-                  .then(response => {
-               //       var count = response.data.count;
-                    //  let ext = res.data.data.substring(res.data.data.lastIndexOf(".") + 1);
-      //           	var mention =  bject.keys(event.mentions)[0];
-var file = fs.createWriteStream(`${name}.png`);
-                     var targetUrl = response.data.url;
-                                             
-  
-                    
-                   var gifRequest = http.get(targetUrl, function (gifResponse) {
-                        gifResponse.pipe(file);
-                        file.on('finish', function () {
-                           console.log(`${name}.png Downloading!`)
-                           var message = {
-                              body:`Name: ${name}\nAuthor: ` + response.data.author + ``, 
-        
-                              attachment: fs.createReadStream(__dirname + `/${name}.png`)
-                           }
-                           api.sendMessage(message, event.threadID, event.messageID);
-                           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-                        });
-                    });
-                  })
-                  .catch(error => {
-                     api.sendMessage("Failed to generate image", event.threadID, event.messageID);
-                      
-                  })                      
-} 
-                                    }
+                       
                         
         
              
@@ -2490,8 +2440,57 @@ console.log(`${file} has been deleted!`)
                      api.sendMessage("Failed to load image", event.threadID, event.messageID);
                   })     
 }
-      
-      else if ((input.startsWith(prefix + "yuriNsfw")) && !bot.includes(event.senderID)){
+      else if ((input.startsWith(prefix + "holo")) && !bot.includes(event.senderID)){
+  const { threadID, messageID } = event;
+  let data = input.split(" ");
+  var type;
+  switch(data[1]) {
+    case "rushia":
+    case "Rushia":
+    type = "Rushia";
+    break;
+    case "pekora":
+    case "Pekora":
+    case "peko":
+    case "Peko":
+    type = "Pekora";
+    break;
+    case "coco": 
+    case "Coco":
+    type = "Coco";
+    break;
+    case "gura":
+    case "Gura":
+    case "gawr":
+    case "Gawr":
+    type = "Gura";
+    break;
+    case "marine":
+    case "Marine":
+    case "Marin":
+    type = "Marine";
+    break;
+    default:
+    return api.sendMessage(`⚠️Invalid Use Of  Command!\n💡Usage: !holo<space>gura/marine/rushia/pekora/coco`, threadID, messageID);
+    break;
+  }
+axios.get(`https://saikiapi-v3-production.up.railway.app/holo/${type}`).then(res => {
+let ext = res.data.url.substring(res.data.url.lastIndexOf(".") + 1);
+    let callback = function () {
+                    api.sendMessage({
+                        body: `Name: ${res.data.name}\nAuthor: ${res.data.author}\nCredits: ${res.data.credits}`,
+                        attachment: fs.createReadStream(__dirname + `/${type}.${ext}`)
+                    }, event.threadID, () => fs.unlinkSync(__dirname + `/${type}.${ext}`), event.messageID);
+   api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                };
+                request(res.data.url).pipe(fs.createWriteStream(__dirname + `/${type}.${ext}`)).on("close", callback);
+            })
+    .catch(err => {
+                     api.sendMessage("there's something problem while generating photo, please try again!", event.threadID, event.messageID);
+    api.setMessageReaction("☹️", event.messageID, (err) => {}, true);
+                  })     
+}
+      /*else if ((input.startsWith(prefix + "yuriNsfw")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd02)) {
                                     cd02[event.senderID] = Math.floor(Date.now() / 1000) + (15 * 1);
@@ -2525,7 +2524,7 @@ console.log(`${file} has been deleted!`)
     .catch(err => {
                      api.sendMessage("Failed to load image", event.threadID, event.messageID);
                   })     
-}
+} */
       
                         if ((input.startsWith(prefix + "animage")) && !bot.includes(event.senderID)){
                                 if (!(vips.includes(event.senderID))) {
