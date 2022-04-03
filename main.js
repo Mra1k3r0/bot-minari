@@ -14,6 +14,7 @@ const http = require('https'); // or 'https' for https:// URLs
 //const login = require("fca-fortesting-unofficial");
 const login = require("helyt");
 //const login = require("fca-horizon-remake");
+const Innertube = require('youtubei.js'); 
 const axios = require("axios");
 const YoutubeMusicApi = require('youtube-music-api')
 const ytdl = require('@distube/ytdl-core');
@@ -3127,7 +3128,7 @@ else if(input.startsWith(prefix + "test")){
                         
                         
      
-               else if (input.startsWith(prefix+"video")) {
+        /*       else if (input.startsWith(prefix+"video")) {
                     var name = input;
                     name = name.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()).substring(7);
                     let data = input.split(" ");
@@ -3180,8 +3181,69 @@ else if(input.startsWith(prefix + "test")){
                             api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
                             }
                         }
-                    }
-                                    
+                    } */
+      
+else if (input.startsWith(prefix + "video")){
+var text = input;     
+text = text.substring(7)
+let data = input.split(" ")
+
+if (data.length < 2) {
+                                api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !video<space>name of video", event.threadID);
+                                      }else{if (!(vips.includes(event.senderID))) {
+                                if (!(event.senderID in cd)) {
+                                    cd[event.senderID] = Math.floor(Date.now() / 1000) + (60 * 3);
+                                }
+                                else if (Math.floor(Date.now() / 1000) < cd[event.senderID]) {
+                                    api.sendMessage("Opps, you're going too fast! Wait for " + Math.floor((cd[event.senderID] - Math.floor(Date.now() / 1000)) / 60) + " mins and " + (cd[event.senderID] - Math.floor(Date.now() / 1000)) % 60 + " seconds", event.threadID, event.messageID);
+return
+   }
+else {                                  cd[event.senderID] = Math.floor(Date.now() / 1000) + (60 * 3);
+                                }
+ }
+data.shift()
+  const youtube = await new Innertube();
+ 
+  const search = await youtube.search(text);
+if (search.videos[0] === undefined){api.sendMessage("Error: Invalid request.",event.threadID,event.messageID);}else{api.sendMessage("Connecting to YouTube!", event.threadID,event.messageID);
+var timeleft = 3;
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    api.sendMessage("A video has found!\n\nStarting to Download", event.threadID, event.messageID);
+    }
+  timeleft -= 1;
+}, 1000);
+  const stream = youtube.download(search.videos[0].id, {
+    format: 'mp4',
+    quality: '480p', 
+    type: 'videoandaudio',
+    bitrate: '512',
+    audioQuality: 'highest',
+    loudnessDB: '20',
+    audioBitrate: '320'
+  });
+    stream.pipe(fs.createWriteStream(`./cache/video.mp4`));
+ 
+  stream.on('start', () => {
+    console.info('[DOWNLOADER]', 'Starting download now!');
+  }); 
+  stream.on('info', (info) => {
+    console.info('[DOWNLOADER]',`Downloading ${info.video_details.title} by ${info.video_details.metadata.channel_name}`);
+  });
+  stream.on('end', () => {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    console.info('[DOWNLOADER]','Done!')
+    var message = {
+          body:("YT Video Downloader\n\n"+search.videos[0].title),
+         attachment:[ 
+fs.createReadStream(__dirname + "/cache/video.mp4")]}
+           api.sendMessage(message, event.threadID,event.messageID);
+  }); stream.on('error', (err)=> console.error('[ERROR]',err));
+}
+      } 
+                    }                             
 
        /*==================================== GOOGLE TRANSLATE COMMAND ============================================*/
 //Credits To: Javanny De Leon, John Roy Lapida       
