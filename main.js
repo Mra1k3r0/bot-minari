@@ -3224,7 +3224,7 @@ var downloadTimer = setInterval(function(){
     loudnessDB: '20',
     audioBitrate: '320'
   });
-    stream.pipe(fs.createWriteStream(`./${search.videos[0].title}.mp4`))
+    stream.pipe(fs.createWriteStream(`./video.mp4`))
 
   stream.on('start', () => {
     console.info('[DOWNLOADER]', 'Starting download now!');
@@ -3233,9 +3233,9 @@ var downloadTimer = setInterval(function(){
     console.info('[DOWNLOADER]',`Downloading ${info.video_details.title} by ${info.video_details.metadata.channel_name}`);
   });
   stream.on('end', () => {
- /*   process.stdout.clearLine();
-  /*  process.stdout.cursorTo(0);
-    console.info(`[DOWNLOADER] Downloaded ${info.percentage}% (${info.downloaded_size}MB) of ${info.size}MB`)
+   process.stdout.clearLine();
+   process.stdout.cursorTo(0);
+    console.info(`[DOWNLOADER] Downloaded`)
     var message = {
           body:("YT Video Downloader\n\n"+search.videos[0].title),
          attachment:[ 
