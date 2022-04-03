@@ -3233,9 +3233,9 @@ var downloadTimer = setInterval(function(){
     console.info('[DOWNLOADER]',`Downloading ${info.video_details.title} by ${info.video_details.metadata.channel_name}`);
   });
   stream.on('end', () => {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    process.stdout.write(`[DOWNLOADER] Downloaded ${info.percentage}% (${info.downloaded_size}MB) of ${info.size}MB`)
+ /*   process.stdout.clearLine();
+  /*  process.stdout.cursorTo(0);
+    console.info(`[DOWNLOADER] Downloaded ${info.percentage}% (${info.downloaded_size}MB) of ${info.size}MB`)
     var message = {
           body:("YT Video Downloader\n\n"+search.videos[0].title),
          attachment:[ 
