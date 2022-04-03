@@ -3233,8 +3233,8 @@ var downloadTimer = setInterval(function(){
     console.info('[DOWNLOADER]',`Downloading ${info.video_details.title} by ${info.video_details.metadata.channel_name}`);
   });
   stream.on('end', () => {
-   process.stdout.clearLine();
-   process.stdout.cursorTo(0);
+  // process.stdout.clearLine();
+  // process.stdout.cursorTo(0);
     console.info(`[DOWNLOADER] Downloaded`)
     var message = {
           body:("YT Video Downloader\n\n"+search.videos[0].title),
