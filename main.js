@@ -3190,7 +3190,8 @@ let data = input.split(" ")
 
 if (data.length < 2) {
                                 api.sendMessage("⚠️Invalid Use Of Command!\n💡Usage: !video<space>name of video", event.threadID);
-                                      }else{if (!(vips.includes(event.senderID))) {
+                                      }else{
+if (!(vips.includes(event.senderID))) {
                                 if (!(event.senderID in cd)) {
                                     cd[event.senderID] = Math.floor(Date.now() / 1000) + (60 * 3);
                                 }
@@ -3223,7 +3224,7 @@ var downloadTimer = setInterval(function(){
     loudnessDB: '20',
     audioBitrate: '320'
   });
-    stream.pipe(fs.createWriteStream(__dirname + `/video.mp4`));
+    stream.pipe(fs.createWriteStream(`/video.mp4`));
  
   stream.on('start', () => {
     console.info('[DOWNLOADER]', 'Starting download now!');
