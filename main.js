@@ -3235,13 +3235,14 @@ var downloadTimer = setInterval(function(){
   stream.on('end', () => {
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
-    console.info('[DOWNLOADER]','Done!')
+    process.stdout.write(`[DOWNLOADER] Downloaded ${info.percentage}% (${info.downloaded_size}MB) of ${info.size}MB`)
     var message = {
           body:("YT Video Downloader\n\n"+search.videos[0].title),
          attachment:[ 
 fs.createReadStream(__dirname + "/video.mp4")]}
            api.sendMessage(message, event.threadID,event.messageID);
-  }); stream.on('error', (err)=> console.error('[ERROR]',err));
+  }); 
+stream.on('error', (err)=> console.error('[ERROR]',err));
 }
       } 
                     }                             
