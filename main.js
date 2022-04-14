@@ -1160,10 +1160,10 @@ else if (input.startsWith("minato-AI")){
      var text =  data.join(" ");        
   const chatbot  =  new  Chatbot({name: "Minato", gender: "Najimi"});
 const res = await chatbot.chat(text)
-   if(res === "My dear great botmaster, Udit.") {
+if(res === "My dear great botmaster, Udit.") {
     api.sendMessage(`I made by master SaikiDesu, also known as John Paul Caigas`, event.threadID, event.messageID)
     return;
-              }     
+              }   
       if(res === "My birthplace is Udit's laptop. What is your birthplace?") {
     api.sendMessage(`I live here in Tokyo, Japan. What about you?`, event.threadID, event.messageID)
     return;
@@ -1176,6 +1176,17 @@ const res = await chatbot.chat(text)
     api.sendMessage(`I suggest you to watch Boku no Pico, 10/10 wholesome.`, event.threadID, event.messageID)
     return;
               }     
+            if(res === "I was created by Udit.") {
+    api.sendMessage(`I was created by SaikiDesu`, event.threadID, event.messageID)
+    return;
+              }     
+              
+              if(res === "I obey Lebyy_Dev.") {
+    api.sendMessage(`I obey SaikiDesu`, event.threadID, event.messageID)
+    return;
+              }     
+ 
+              
 api.sendMessage(res,event.threadID,event.messageID).catch(e => console.log(e));
    
               }
