@@ -335,9 +335,39 @@ var query = (event.type == "message_reply") ? event.messageReply.body : data.joi
 //}
 }
 
+else if (input.startsWith("minato-AI")){
+    const Chatbot  =  require("discord-chatbot");
 
+  let data = input.split(" ")
+  //    if (data.length < 2) {api.sendMessage(`please put a message.`,event.threadID, event.messageID)}
+//  else{
+ // text = text.substring(7)
+    data.shift()
 
-  
+     var text = (event.type == "message_reply") ? event.messageReply.body: data.join(" ");      
+  const chatbot  =  new  Chatbot({name: "Saiki", gender: "Najimi"});
+chatbot.chat(text).then(res=>
+api.sendMessage(res,event.threadID,event.messageID)).catch(e => console.log(e));
+          //    }
+}
+
+  else if (input.startsWith("mina-AI")) {
+            let data = input.split(" ");
+
+if (data < 2) {api.sendMessage("Please enter a message!",event.threadID, event.messageID)}
+      else{
+          try{
+      var vvv = (event.type == "message_reply") ? event.messageReply.body : data.join(" ");
+    const res = await axios.get(`http://api.brainshop.ai/get?bid=158335&key=xfHWnGLKmK9ls2kd&uid=158335&botmaster=SaikiDesu &msg=${vvv}`);
+          
+return api.sendMessage(`${res.data.cnt}`, event.threadID, event.messageID)
+  } catch(err) {
+    
+          api.sendMessage(`⚠️Error: `+ err, event.threadID, event.messageID)    
+          }
+      }
+  }
+                                        
 
           /*==================================== SIMSIMI COMMANDS & API ============================================*/
 //Credits To: Javanny De Leon                 
@@ -348,7 +378,7 @@ var query = (event.type == "message_reply") ? event.messageReply.body : data.joi
             } else {
                 try {
                     data.shift()
-                    let txt = data.join(" ");
+                    let txt = (event.type == "message_reply") ? event.messageReply.body : data.join(" ");
                 axios.get('https://api-sv2.simsimi.net/v2/?text=' + txt + '&lc=ph&cf=false&name=Minari')
                         .then(response => {
 api.sendMessage(response.data['success'], event.threadID, event.messageID);
@@ -357,11 +387,11 @@ api.sendMessage(response.data['success'], event.threadID, event.messageID);
                     api.sendMessage(`⚠️${err.message}`, event.threadID, event.messageID);
                     }
                 }
-            }        
+          }       
 
 
         
-                
+            
 
        
 if(input.startsWith(prefix + "stalk")){
@@ -1037,7 +1067,128 @@ api.setMessageReaction("🕦", event.messageID, (err) => {}, true);             
   fs.writeFileSync(path_trigger, attach.attachment);
   api.sendMessage({attachment: fs.createReadStream(path_trigger)}, event.threadID, () => fs.unlinkSync(path_trigger), event.messageID);
 }
-        
+
+              else if (input.startsWith("mina-AI")) {
+            let data = input.split(" ");
+
+if (data.length < 2) {
+    api.sendMessage("Please enter a message!",event.threadID, event.messageID)
+}else{
+          try{
+              data.shift()
+      var vvv = data.join(" ");
+    const res = await axios.get(`http://api.brainshop.ai/get?bid=158335&key=xfHWnGLKmK9ls2kd&uid=158335&msg=${vvv}`);
+          
+return api.sendMessage(`${res.data.cnt}`, event.threadID, event.messageID)
+  } catch(err) {
+    
+          api.sendMessage(`⚠️Error: `+ err, event.threadID, event.messageID)    
+          }
+      }
+      }
+
+else if (input.startsWith(prefix +"vtuber_wiki")) {
+            let data = input.split(" ");
+	
+    const { wiki } = require("vtuber-wiki"); 
+  if (data.length < 2) {api.sendMessage(`Search cannot leave as blank!`,event.threadID, event.messageID)}
+  else{
+//var query = (event.type == "message_reply") ? event.messageReply.body : data.join(" ");
+      data.shift()
+var query = data.join(" ");
+    let Replaced = query.replace(/ /g, " ");
+  api.sendMessage(`🔎Searching for ${Replaced}...`, event.threadID, event.messageID);
+
+const vtuber = await wiki(Replaced)
+ .catch(err => {
+                     api.sendMessage("⚠️" + err, event.threadID, event.messageID);
+           }); 
+          if(vtuber === null) {
+    api.sendMessage(`⚠️${Replaced} not found.`, event.threadID, event.messageID)
+    return;
+          }
+   console.log(vtuber);                
+    let getURL = vtuber.image_url;
+
+
+   if (!vtuber.title || vtuber.title === undefined) vtuber.title = "N/A";
+  
+    if (!vtuber.gender || vtuber.gender === undefined) vtuber.gender = "N/A";
+  
+  if (!vtuber.birthday || vtuber.birthday === undefined) vtuber.birthday = "N/A";
+
+  if (!vtuber.height || vtuber.height === undefined) vtuber.height = "N/A";
+
+  if (!vtuber.weight || vtuber.weight === undefined) vtuber.weight = "N/A";
+
+
+
+  
+var v1 = vtuber.title;
+var v2 = vtuber.gender;
+var v3 = vtuber.age.replace(/<ref>/g, " ");
+var v4 = vtuber.birthday;
+var v5 = vtuber.description;
+var v6 = vtuber.more;
+var v7 = vtuber.height;
+var v8 = vtuber.weight;
+var v9 = vtuber.channel.replace(/<br>/g, "\n\n");
+var v10 = vtuber.social_media.replace(/<br>/g, "\n\n");
+var v11 = vtuber.official_website.replace(/<br>/g, "\n\n");
+var v12 = vtuber.affiliation
+
+  //var v11 = bb.replace(/<br>/g, "\n\n");
+
+
+ 
+        let callback = function () {           
+          
+
+   
+ api.sendMessage({
+     body:`Title: ${v1}\nAffiliation: ${v12}\nGender: ${v2}\nAge: ${v3}\nBirthday: ${v4}\nHeight: ${v7}\nWeight: ${v8}\n\nDescription: ${v5}\n\nChannel: ${v9}\n\nSocial Media: ${v10}\n\nSource(s): ${v11}\n\nMore Info: ${v6}`, 
+					attachment: fs.createReadStream(__dirname + `/cache/vtuber.png`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/cache/vtuber.png`), event.messageID)
+				}
+    
+ //   }
+        request(getURL).pipe(fs.createWriteStream(__dirname + `/cache/vtuber.png`)).on("close", callback)  
+  }
+}		
+else if (input.startsWith("minato-AI")){
+    const Chatbot  =  require("discord-chatbot");
+
+  let data = input.split(" ")
+      if (data.length < 2) {api.sendMessage(`please put a message.`,event.threadID, event.messageID)}
+  else{
+ // text = text.substring(7)
+    data.shift()
+
+     var text =  data.join(" ");        
+  const chatbot  =  new  Chatbot({name: "Saiki", gender: "Najimi"});
+chatbot.chat(text).then(res=>
+api.sendMessage(res,event.threadID,event.messageID)).catch(e => console.log(e));
+              }
+}
+    else if (input.startsWith("smartest-AI")){
+    const smartestchatbot = require('smartestchatbot');
+
+  let data = input.split(" ")
+      if (data.length < 2) {api.sendMessage(`please put a message.`,event.threadID, event.messageID)}
+  else{
+ // 
+    data.shift()
+
+     var txxt = input;
+      txxt = txxt.substring(11)
+      
+      const client = new smartestchatbot.Client(); 
+   client.chat({message:txxt, name:"Dude", owner:"SaikiDesu", user: 0000000000}, "auto").then(res=>
+api.sendMessage(res,event.threadID,event.messageID)).catch(e => console.log(e));
+              }
+    }
+
+
         
 else if ((input.startsWith(prefix + "trump")) && !bot.includes(event.senderID)){
     
