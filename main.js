@@ -1137,14 +1137,7 @@ var v10 = vtuber.social_media.replace(/<br>/g, "\n\n");
 var v11 = vtuber.official_website.replace(/<br>/g, "\n\n");
 var v12 = vtuber.affiliation
 
-  //var v11 = bb.replace(/<br>/g, "\n\n");
-
-
- 
-        let callback = function () {           
-          
-
-   
+let callback = function () {                       
  api.sendMessage({
      body:`Title: ${v1}\nAffiliation: ${v12}\nGender: ${v2}\nAge: ${v3}\nBirthday: ${v4}\nHeight: ${v7}\nWeight: ${v8}\n\nDescription: ${v5}\n\nChannel: ${v9}\n\nSocial Media: ${v10}\n\nSource(s): ${v11}\n\nMore Info: ${v6}`, 
 					attachment: fs.createReadStream(__dirname + `/cache/vtuber.png`)
@@ -1165,9 +1158,26 @@ else if (input.startsWith("minato-AI")){
     data.shift()
 
      var text =  data.join(" ");        
-  const chatbot  =  new  Chatbot({name: "Saiki", gender: "Najimi"});
-chatbot.chat(text).then(res=>
-api.sendMessage(res,event.threadID,event.messageID)).catch(e => console.log(e));
+  const chatbot  =  new  Chatbot({name: "Minato", gender: "Najimi"});
+const res = await chatbot.chat(text)
+   if(res === "My dear great botmaster, Udit.") {
+    api.sendMessage(`I made by master SaikiDesu, also known as John Paul Caigas`, event.threadID, event.messageID)
+    return;
+              }     
+      if(res === "My birthplace is Udit's laptop. What is your birthplace?") {
+    api.sendMessage(`I live here in Tokyo, Japan. What about you?`, event.threadID, event.messageID)
+    return;
+              } 
+      if(res === "My favorite anime is <em>Ghost in the Shell</em>") {
+    api.sendMessage(`My favorite anime is Zero no Tsukaima, what about you?`, event.threadID, event.messageID)
+    return;
+              }     
+      if(res === "I can't think of any. You suggest anime.") {
+    api.sendMessage(`I suggest you to watch Boku no Pico, 10/10 wholesome.`, event.threadID, event.messageID)
+    return;
+              }     
+api.sendMessage(res,event.threadID,event.messageID).catch(e => console.log(e));
+   
               }
 }
     else if (input.startsWith("smartest-AI")){
@@ -1197,7 +1207,7 @@ else if ((input.startsWith(prefix + "trump")) && !bot.includes(event.senderID)){
 
 let { senderID, threadID, messageID } = event;
 	const { loadImage, createCanvas } = require("canvas");
-  let pathImg = __dirname + '/trump.png';
+  let pathImg = __dirname + '/cache/trump.png';
 	let text = data.join(" ");
 	if (!text) return api.sendMessage("Enter the content of the comment on the board", threadID, messageID);
 	let getPorn = (await axios.get(`https://i.imgur.com/ZtWfHHx.png`, { responseType: 'arraybuffer' })).data;
@@ -1229,7 +1239,7 @@ let { senderID, threadID, messageID } = event;
 	const { loadImage, createCanvas } = require("canvas");
 	//const fs = global.nodemodule["fs-extra"];
 	//const axios = global.nodemodule["axios"];
-	let pathImg = __dirname + '/zuck.png';
+	let pathImg = __dirname + '/cache/zuck.png';
 	let text = data.join(" ");
 	if (!text) return api.sendMessage("Enter the content of the comment on the board", threadID, messageID);
 	let getPorn = (await axios.get(`https://i.postimg.cc/gJCXgKv4/zucc.jpg`, { responseType: 'arraybuffer' })).data;
@@ -1314,7 +1324,7 @@ else if ((input.startsWith(prefix + "drake")) && !bot.includes(event.senderID)){
   const request = require('request');
  // const fs = global.nodemodule["fs-extra"];
 //  const axios = global.nodemodule["axios"];
-  let pathImg = __dirname + `/drake.png`;
+  let pathImg = __dirname + `/cache/drake.png`;
   const text = data.join(" ").trim().replace(/\s+/g, " ").replace(/(\s+\|)/g, "|").replace(/\|\s+/g, "|").split("|");
   let getImage = (
     await axios.get(encodeURI(`https://i.imgur.com/qmkwLUx.png`), {
@@ -1322,15 +1332,15 @@ else if ((input.startsWith(prefix + "drake")) && !bot.includes(event.senderID)){
     })
   ).data;
   fs.writeFileSync(pathImg, Buffer.from(getImage, "utf-8"));
-if(!fs.existsSync(__dirname+'/SVN-Arial 2.ttf')) { 
+if(!fs.existsSync(__dirname+'/cache/SVN-Arial 2.ttf')) { 
       let getfont = (await axios.get(`https://drive.google.com/u/0/uc?id=11YxymRp0y3Jle5cFBmLzwU89XNqHIZux&export=download`, { responseType: "arraybuffer" })).data;
-       fs.writeFileSync(__dirname+"/SVN-Arial 2.ttf", Buffer.from(getfont, "utf-8"));
+       fs.writeFileSync(__dirname+"/cache/SVN-Arial 2.ttf", Buffer.from(getfont, "utf-8"));
     };
   let baseImage = await loadImage(pathImg);
   let canvas = createCanvas(baseImage.width, baseImage.height);
   let ctx = canvas.getContext("2d");
   ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
-  Canvas.registerFont(__dirname+`/SVN-Arial 2.ttf`, {
+  Canvas.registerFont(__dirname+`/cache/SVN-Arial 2.ttf`, {
         family: "SVN-Arial 2"
     });
   ctx.font = "30px SVN-Arial 2";
@@ -1358,8 +1368,8 @@ else if ((input.startsWith(prefix + "phub")) && !bot.includes(event.senderID)){
 let { senderID, threadID, messageID } = event;
 	const { loadImage, createCanvas } = require("canvas");
 	
-	let avatar = __dirname + '/avt.png';
-	let pathImg = __dirname + '/porn.png';
+	let avatar = __dirname + '/cache/avt.png';
+	let pathImg = __dirname + '/cache/porn.png';
 	var text = data.join(" ");
 	let name = (await api.getUserInfo(senderID))[senderID].name
 	var linkAvatar = (await api.getUserInfo(senderID))[senderID].thumbSrc;
@@ -1403,7 +1413,7 @@ else if ((input.startsWith(prefix + "simpson")) && !bot.includes(event.senderID)
   let { senderID, threadID, messageID } = event;
 	const { loadImage, createCanvas } = require("canvas");
 	
-	let pathImg = __dirname + '/simpson.png';
+	let pathImg = __dirname + '/cache/simpson.png';
 	var text = data.join(" ");
   if (event.type == "message_reply") {
         text = event.messageReply.body}
@@ -1438,7 +1448,7 @@ let { senderID, threadID, messageID } = event;
 	const { loadImage, createCanvas } = require("canvas");
 	//const fs = global.nodemodule["fs-extra"];
 	//const axios = global.nodemodule["axios"];
-	let pathImg = __dirname + `/ani.png`;
+	let pathImg = __dirname + `/cache/ani.png`;
 	let text = data.join(" ");
 	if (!text) return api.sendMessage("Enter the content of the comment on the board", threadID, messageID);
 	let getSaikii = (await axios.get(`https://i.imgur.com/oiGmEVV.jpeg`, { responseType: 'arraybuffer' })).data;
@@ -1603,7 +1613,7 @@ data.shift()
                            console.log('Flag Downloading!')                     
                                var message = {
                               body:`COVID UPDATE\n\nCountry: ${response.data.country}\n`  + `Continents: ${continent}\n` +  `Population: ${population}\n` + `Cases: ${cases}\n` + `Died: ${death}\n` + `Recovered: ${recovered}\n` + `Critical: ${critical}\n` + `Tests: ${tests}\n` + `Active: ${active}\n` + `Today Deaths: ${todayD}\n` + `Today Recovered: ${todayR}\n` + `Today Cases: ${todayC}\n\n` + `${DateAndTime}\n`, 
-                              attachment: fs.createReadStream(__dirname + '/test.png')
+                              attachment: fs.createReadStream(__dirname + '/cache/test.png')
                            }
                            api.sendMessage(message, event.threadID, event.messageID);
                            api.setMessageReaction("✅", event.messageID, (err) => {}, true);
@@ -1809,7 +1819,7 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
                            
                             var message = {
                               body: response.data.title + "\n\nAuthor: " + response.data.author,
-                              attachment: fs.createReadStream(__dirname + `/memes.png`)
+                              attachment: fs.createReadStream(__dirname + `/cache/memes.png`)
                            }
                            api.sendMessage(message, event.threadID, event.messageID);
                            api.setMessageReaction("✅", event.messageID, (err) => {}, true);
@@ -1855,12 +1865,12 @@ else if ((input.startsWith(prefix + "meme") || input.startsWith(prefix + "msme")
           tag: tag,
           id: Object.keys(event.mentions)[0]
         }],
-						attachment: fs.createReadStream(__dirname + `/${file}`)
-					}, event.threadID, () => fs.unlinkSync(__dirname + `/${file}`), event.messageID)
+						attachment: fs.createReadStream(__dirname + `/cache/${file}`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/cache/${file}`), event.messageID)
 console.log(`${file} has been deleted!`) 
 				};
  //   }
-     request(getURL).pipe(fs.createWriteStream(__dirname + `/${file}`)).on("close", callback);
+     request(getURL).pipe(fs.createWriteStream(__dirname + `/cache/${file}`)).on("close", callback);
 			})
     .catch(err => {
                      api.sendMessage("Failed to generate gif, be sure that you've tag someone!", event.threadID, event.messageID);
@@ -3492,19 +3502,20 @@ api.sendMessage(response.data['success'], event.threadID, event.messageID);
                                 
     axios.get('https://hermes-music.jersoncarin.dev/search?q=' + name)
                   .then(response => {
-                                ffmpegs(strm)
+ let test = "cache";
+                      ffmpegs(strm)
                                     .audioBitrate(96)
-                                    .save(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`)
+                                    .save(`${__dirname}/${test}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`)
                                     .on("end", () => {
                                         console.log(`Playing ${data.join(" ").replace(/[^\w\s]/gi, '')}`);
                                         api.sendMessage({
                                             body: "😚Here's what ya ordered senpai!\n🎶Song Title: " + info.videoDetails.title + "\n\n" + response.data.lyrics + "\n\n🎉Made by: John Paul Caigas\n🔏Credits to: Salvador",
-                                                              attachment: fs.createReadStream(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`)
+                                                              attachment: fs.createReadStream(`${__dirname}/${test}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`)
                                                 .on("end", async () => {
-                                                    if (fs.existsSync(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`)) {
-                                                        fs.unlink(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`, function (err) {
+                                                    if (fs.existsSync(`${__dirname}/${test}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`)) {
+                                                        fs.unlink(`${__dirname}/${test}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3`, function (err) {
                                                             if (err) console.log(err);
-                                                            console.log(`${__dirname}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3 is deleted!`);
+                                                            console.log(`${__dirname}/${test}/${data.join(" ").replace(/[^\w\s]/gi, '')}.mp3 is deleted!`);
                                                         });
                                                     }
                                                 })
@@ -3529,7 +3540,7 @@ api.sendMessage(response.data['success'], event.threadID, event.messageID);
                     else if (input.startsWith(prefix + "aniquote")) {
             axios.get('https://animechan.vercel.app/api/random')
               .then(response => {
-                api.sendMessage("'" + response.data.quote + "'" + "\n\n~ " + response.data.character + " (" + response.data.anime + ")" + "\n\n💠 Made By: John Paul Caigas", event.threadID, event.messageID);
+                api.sendMessage("'" + response.data.quote + "'" + "\n\n~ " + response.data.character + " (" + response.data.anime + ")" + "\n", event.threadID, event.messageID);
               })
               .catch(error => {
                 api.sendMessage(error, event.threadID, event.messageID);
@@ -3544,7 +3555,7 @@ api.sendMessage(response.data['success'], event.threadID, event.messageID);
               .then((response) => {
                 //Get response data
                 if (response.status == 200) {
-                  api.sendMessage(response.data[0].bookname + " " + response.data[0].chapter + ":" + response.data[0].verse + "\n\n" + response.data[0].text + "\n\n💠 Made By: John Paul Caigas", event.threadID, event.messageID);
+                  api.sendMessage(response.data[0].bookname + " " + response.data[0].chapter + ":" + response.data[0].verse + "\n\n" + response.data[0].text + "\n\n Made By: John Paul Caigas", event.threadID, event.messageID);
                   console.log(response.data[0].text);
                 } else {
                   api.sendMessage("Error!", event.threadID, event.messageID);
@@ -3696,7 +3707,7 @@ if (d[0] == "img") {
                                             console.log('finished downloading photo..')
                                             api.sendMessage({
                                                 body:'@'+ data[event.senderID]['name'] + " unsent this Photo😶: \n",
-                                                attachment: fs.createReadStream(__dirname + '/image.jpg'),
+                                                attachment: fs.createReadStream(__dirname + '/cache/image.jpg'),
                                                 mentions: [{
                                                     tag: '@'+data[event.senderID]['name'],
                                                     id: event.senderID,
@@ -3718,7 +3729,7 @@ else if (d[0] == "gif") {
                                             console.log('finished downloading gif..')
                                             api.sendMessage({
                                                 body:'@'+ data[event.senderID]['name'] + " unsent this GIF😶: \n",
-                                                attachment: fs.createReadStream(__dirname + '/animated_image.gif'),
+                                                attachment: fs.createReadStream(__dirname + '/cache/animated_image.gif'),
                                                 mentions: [{
                                                     tag: '@'+data[event.senderID]['name'],
                                                     id: event.senderID,
@@ -3736,7 +3747,7 @@ else if (d[0] == "sticker") {
                                             console.log('finished downloading gif..')
                                             api.sendMessage({
                                                 body:'@'+ data[event.senderID]['name'] + " unsent this Sticker😶: \n",
-                                                attachment: fs.createReadStream(__dirname + '/sticker.png'),
+                                                attachment: fs.createReadStream(__dirname + '/cache/sticker.png'),
                                                 mentions: [{
                                                     tag: '@'+data[event.senderID]['name'],
                                                     id: event.senderID,
@@ -3754,7 +3765,7 @@ else if (d[0] == "sticker") {
                                             console.log('finished downloading video..')
                                             api.sendMessage({
                                                 body:'@'+ data[event.senderID]['name'] + " unsent this Video😶: \n",
-                                                attachment: fs.createReadStream(__dirname + '/video.mp4'),
+                                                attachment: fs.createReadStream(__dirname + '/cache/video.mp4'),
                                                 mentions: [{
                                                     tag: '@'+data[event.senderID]['name'],
                                                     id: event.senderID,
@@ -3774,7 +3785,7 @@ else if (d[0] == "sticker") {
                                             console.log('finished downloading audio..')
                                             api.sendMessage({
                                                 body:'@'+ data[event.senderID]['name'] + " unsent this Audio😶: \n",
-                                                attachment: fs.createReadStream(__dirname + '/vm.mp3'),
+                                                attachment: fs.createReadStream(__dirname + '/cache/vm.mp3'),
                                                 mentions: [{
                                                     tag: '@'+data[event.senderID]['name'],
                                                     id: event.senderID,

@@ -4,7 +4,7 @@
   "description": "testttt",
   "main": "main.js",
   "dependencies": {
-    "@distube/ytdl-core": "^4.11.1",
+    "@distube/ytdl-core": "^4.11.3",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "cloudscraper": "^4.6.0",
     "discord-chatbot": "^2.1.0",
