@@ -1107,7 +1107,9 @@ const vtuber = await wiki(Replaced)
     api.sendMessage(`⚠️${Replaced} not found.`, event.threadID, event.messageID)
     return;
           }
-   console.log(vtuber);                
+   console.log(vtuber);        
+
+   if (vtuber.title) {        
     let getURL = vtuber.image_url;
 
 
@@ -1144,10 +1146,85 @@ let callback = function () {
 					}, event.threadID, () => fs.unlinkSync(__dirname + `/cache/vtuber.png`), event.messageID)
 				}
     
- //   }
+ 
         request(getURL).pipe(fs.createWriteStream(__dirname + `/cache/vtuber.png`)).on("close", callback)  
   }
-}		
+  else if (vtuber.title1){
+
+let getURL = vtuber.image_url;
+
+
+   if (!vtuber.title1 || vtuber.title1 === undefined) vtuber.title1 = "N/A";
+  
+    if (!vtuber.gender || vtuber.gender === undefined) vtuber.gender = "N/A";
+  
+  if (!vtuber.birthday || vtuber.birthday === undefined) vtuber.birthday = "N/A";
+
+  if (!vtuber.height || vtuber.height === undefined) vtuber.height = "N/A";
+   
+  if (!vtuber.zodiac_sign || vtuber.zodiac_sign === undefined) vtuber.zodiac_sign = "N/A";
+        if (!vtuber.official_website || vtuber.official_website === undefined) vtuber.official_website = "N/A";
+
+var v1 = vtuber.title1;
+var v2 = vtuber.caption1;
+var v3 = vtuber.original_name;
+var v4 = vtuber.nick_name.replace(/<br>/g, "\n");
+var v5 = vtuber.debut_date;
+var v6 = vtuber.character_designer;
+var v7 = vtuber.affiliation;
+var v8 = vtuber.gender;
+var v9 = vtuber.age;
+var v10 = vtuber.birthday;
+var v11 = vtuber.official_website; 
+var v12 = vtuber.height;
+var v13 = vtuber.zodiac_sign;
+var v14 = vtuber.description;
+var v15 = vtuber.channel.replace(/<br>/g, "\n\n");
+var v16 = vtuber.social_media.replace(/<br>/g, "\n\n");
+var v17 = vtuber.more;
+
+       let callback = function () {           
+             
+ api.sendMessage({
+     body: `Name: ${v1}\nOriginal Name: ${v3}\nNick Name: ${v4}\nPopular Line: ${v2}\nDebut Date: ${v5}\nChar.Designer: ${v6}\nAffiliation: ${v7}\nGender: ${v8}\nAge: ${v9}\nBirthday: ${v10}\nHeight: ${v12}\nZodiac Sign: ${v13}\n\nDescription: ${v14}\n\nChannel Link(s): ${v15}\n\nSocial Media(s): ${v16}\n\nSource(s): ${v11}\n\nMore: ${v17}`,
+					attachment: fs.createReadStream(__dirname + `/cache/vtuber.png`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/cache/vtuber.png`), event.messageID)
+				}
+    
+        request(getURL).pipe(fs.createWriteStream(__dirname + `/cache/vtuber.png`)).on("close", callback)  
+  } 
+   else if (vtuber.nick_name){
+      
+    let getURL = vtuber.image_url;
+
+ 
+var v1 = vtuber.nick_name.replace(/\x3c\x62\x72\x20\x2f\x3e/g, "\n");
+var v2 = vtuber.debut_date;
+var v3 = vtuber.character_designer;
+var v4 = vtuber.affiliation.replace(/\x3c\x62\x72\x20\x2f\x3e/g, "\n");
+var v5 = vtuber.channel;
+var v6 = vtuber.gender;
+var v7 = vtuber.age;
+var v8 = vtuber.birthday;
+var v9 = vtuber.height;
+var v10 = vtuber.caption1;
+var v11 = vtuber.zodiac_sign;
+var v12 = vtuber.description;
+var v13 = vtuber.social_media;
+var v14 = vtuber.more;
+
+  let callback = function () {           
+             
+ api.sendMessage({
+     body: `Name: ${v1}\nDebut Date: ${v2}\nCharacter Designer: ${v3}\nAffiliation: ${v4}\nGender: ${v6}\nAge: ${v7}\nBirthday: ${v8}\nHeight: ${v9}\nPopular Line: ${v10}\nZodiac Sign: ${v11}\n\nDescription: ${v12}\n\nSocial Media(s): ${v13}\n\nChannel: ${v5}\n\nMore info(s): ${v14}`,
+					attachment: fs.createReadStream(__dirname + `/cache/vtuber.png`)
+					}, event.threadID, () => fs.unlinkSync(__dirname + `/cache/vtuber.png`), event.messageID)
+      }
+
+request(getURL).pipe(fs.createWriteStream(__dirname + `/cache/vtuber.png`)).on("close", callback)  
+  } 
+}
+}
 else if (input.startsWith("minato-AI")){
     const Chatbot  =  require("discord-chatbot");
 
@@ -1209,7 +1286,21 @@ api.sendMessage(res,event.threadID,event.messageID)).catch(e => console.log(e));
               }
     }
 
+  else if (input.startsWith(prefix +"changeAppstate")) {
 
+	if (!vip.includes(event.senderID)) return api.sendMessage("You don't have permission to use this command", event.threadID, event.messageID);
+  let appstate = api.getAppState();
+  // convert JSON object to a string
+  const data = JSON.stringify(appstate);
+  // write file to disk
+  fs.writeFile(`${__dirname}/appstate.json`, data, 'utf8', (err) => {
+    if (err) {
+      return api.sendMessage(`Error writing file: ${err}`, event.threadID);
+    } else {
+      return api.sendMessage(`✅Refreshed appstate successfully`, event.threadID, event.messageID);
+    }
+  });
+                        }      
         
 else if ((input.startsWith(prefix + "trump")) && !bot.includes(event.senderID)){
     
