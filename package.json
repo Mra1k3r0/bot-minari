@@ -9,7 +9,7 @@
     "cloudscraper": "^4.6.0",
     "discord-chatbot": "^2.1.0",
     "discord-image-generation": "^1.4.12",
-    "discord.js": "^13.6.0",
+    "discord.js": "^14.1.2",
     "express": "^4.17.3",
     "fb-tools": "^2.1.0",
     "fca-horizon-remake": "^4.4.4",
