@@ -3,6 +3,10 @@
   "version": "1.0.2",
   "description": "testttt",
   "main": "main.js",
+  "engines": {
+    "node": "14.x",
+    "npm": "7.20.3"
+  },
   "dependencies": {
     "@distube/ytdl-core": "^4.11.3",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
