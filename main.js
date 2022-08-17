@@ -225,7 +225,7 @@ async function qt() {
 
 login({ appState: JSON.parse(process.env['FBSTATE'] )}, (err, api) => {
     if (err) return console.error(err);
-    api.setOptions({ listenEvents: true, selfListen: false });
+    api.setOptions({ listenEvents: true, selfListen: false, userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.28 Safari/537.36" });
     const listenEmitter = api.listenMqtt(async (err, event) => {
         if (err) return console.error(err);
         switch (event.type) {
