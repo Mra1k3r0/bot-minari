@@ -40,7 +40,7 @@
     "ytdl-core": "^4.11.0"
   },
   "devDependencies": {
-    "node": "^17.7.2",
+    "node": "^18.9.1",
     "npm": "^8.6.0"
   },
   "scripts": {
