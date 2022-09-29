@@ -30,7 +30,7 @@
     "node-superfetch": "^0.2.3",
     "opusscript": "^0.0.8",
     "request": "^2.88.2",
-    "sharp": "^0.30.3",
+    "sharp": "^0.31.1",
     "simsimi": "^3.0.0",
     "smartestchatbot": "^2.0.2",
     "vtuber-wiki": "^1.1.5",
