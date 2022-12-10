@@ -27,7 +27,7 @@
     "https": "^1.0.0",
     "mal-scraper": "^2.11.4",
     "node-opus": "^0.3.3",
-    "node-superfetch": "^0.2.3",
+    "node-superfetch": "^0.3.3",
     "opusscript": "^0.0.8",
     "request": "^2.88.2",
     "sharp": "^0.30.3",
