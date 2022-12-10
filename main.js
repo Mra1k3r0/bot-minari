@@ -1,9 +1,3 @@
-
-//////////////////////////////////////////////////////
-//================== AUTO RESTART ==================//
-/////////////////////////////////////////////////////
-
-const timerestart = 120   //in minutes
 const google = require('googlethis');
 const sharp = require("sharp");
 const request = require("request");
