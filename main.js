@@ -1,3 +1,6 @@
+/*MIT License Copyright (c) 2022 mraikero-01*/
+
+
 const google = require('googlethis');
 const sharp = require("sharp");
 const request = require("request");
